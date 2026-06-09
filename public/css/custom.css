@@ -1,0 +1,35 @@
+/* Premium UI Custom Styles (Glassmorphism & Gradients) */
+body {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+.dark body {
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+/* Glassmorphism utility classes */
+.glass {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .glass {
+    background: rgba(0, 0, 0, 0.35) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Micro-animations */
+.hover-scale {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-scale:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.dark .bg-white {
+    background-color: rgba(31, 41, 55, 0.8) !important; /* Make white backgrounds transparent in dark mode */
+}

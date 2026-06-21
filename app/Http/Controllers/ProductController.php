@@ -18,7 +18,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('products.create');
+        return redirect()->route('products.index')->with('success', 'Silakan gunakan tombol "Tambah Baru" di halaman ini.');
     }
 
     public function store(Request $request)
@@ -29,7 +29,14 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'capital_price' => 'required|integer|min:0',
             'selling_price' => 'required|integer|min:0',
+            'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validated['image'] = '/storage/' . $path;
+        }
 
         Product::create($validated);
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
@@ -42,14 +49,22 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        // For gudang, maybe they only update stock. We handle this flexibly.
-        $product->update($request->all());
-        
-        // If it's gudang, redirect back to their dashboard
-        if(auth()->user()->role === 'gudang') {
-            return redirect()->route('dashboard')->with('success', 'Stok berhasil diperbarui.');
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'nullable|string|max:255',
+            'stock' => 'required|integer|min:0',
+            'capital_price' => 'required|integer|min:0',
+            'selling_price' => 'required|integer|min:0',
+            'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validated['image'] = '/storage/' . $path;
         }
 
+        $product->update($validated);
         return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui.');
     }
 

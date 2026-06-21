@@ -38,6 +38,6 @@ class SaleController extends Controller
         // Reduce Stock
         $product->decrement('stock', $request->quantity);
 
-        return redirect()->route('dashboard')->with('success', 'Transaksi berhasil disimpan!');
+        return redirect()->route('store.index')->with('success', 'Checkout berhasil! Pesanan Frozen Food Anda segera diproses.');
     }
 }

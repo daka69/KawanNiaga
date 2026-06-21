@@ -46,6 +46,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        if ($user->role === 'pembeli') {
+            return redirect(route('store.index', absolute: false));
+        }
+        
         return redirect(route('dashboard', absolute: false));
     }
 }

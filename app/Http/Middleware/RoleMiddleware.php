@@ -15,8 +15,17 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if ($request->user()->role !== $role && $request->user()->role !== 'admin') {
-            abort(403, 'Unauthorized Access - Anda tidak memiliki izin untuk halaman ini.');
+        if ($request->user()->role !== $role) {
+            // Jika pembeli tersesat ke halaman penjual, arahkan ke toko
+            if ($request->user()->role === 'pembeli') {
+                return redirect()->route('store.index')->with('error', 'Akses Ditolak: Halaman tersebut khusus Penjual.');
+            }
+            // Jika penjual tersesat ke halaman lain, arahkan ke dashboard
+            if ($request->user()->role === 'penjual') {
+                return redirect()->route('dashboard')->with('error', 'Akses Ditolak: Anda sudah login sebagai Penjual.');
+            }
+            
+            abort(403, 'Akses Ditolak - Anda tidak memiliki izin untuk halaman ini.');
         }
 
         return $next($request);

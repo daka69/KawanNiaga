@@ -1,98 +1,119 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+@php
+    $isPenjual = auth()->check() && auth()->user()->role === 'penjual';
+@endphp
+
+<nav x-data="{ open: false, scrolled: false }" 
+     @scroll.window="scrolled = (window.pageYOffset > 20)"
+     :class="scrolled ? 'top-4 py-3 shadow-ambient' : 'top-8 py-4'"
+     class="fixed left-0 right-0 z-50 mx-auto w-[95%] max-w-[1200px] flex justify-between items-center px-6 outer-shell bg-[#ffffff]/70 backdrop-blur-2xl motion-fluid font-jakarta">
+     
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+    <div class="flex items-center gap-8 w-full justify-between">
+        <div class="flex items-center">
+            <!-- Logo -->
+            <a href="{{ $isPenjual ? route('dashboard') : route('store.index') }}" class="flex items-center gap-2 mr-8">
+                <span class="text-2xl font-display font-semibold text-[#121212] tracking-tight-display hidden sm:block">KawanNiaga</span>
+                <span class="text-xl font-display font-semibold text-[#121212] tracking-tight-display sm:hidden">KN</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <div class="hidden sm:flex items-center gap-2">
+                @if($isPenjual)
+                    <a href="{{ route('dashboard') }}" class="px-4 py-2 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212]' }}">
+                        <i class="ph ph-squares-four mr-1"></i> Dashboard
                     </a>
-                </div>
-
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+                    <a href="{{ route('products.index') }}" class="px-4 py-2 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('products.*') ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212]' }}">
+                        <i class="ph ph-package mr-1"></i> SKU
+                    </a>
+                    <a href="{{ route('admin.orders.index') }}" class="px-4 py-2 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('admin.orders.*') ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212]' }}">
+                        <i class="ph ph-receipt mr-1"></i> Pesanan
+                    </a>
+                    <a href="{{ route('store.index') }}" target="_blank" class="px-4 py-2 rounded-xl text-sm font-medium text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212] transition-colors ml-4 border border-[#121212]/10">
+                        <i class="ph ph-storefront mr-1"></i> Lihat Toko
+                    </a>
+                @else
+                    <a href="{{ route('store.index') }}" class="px-4 py-2 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('store.*') ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212]' }}">
+                        <i class="ph ph-storefront mr-1"></i> Katalog
+                    </a>
+                @endif
             </div>
+        </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+        <!-- Settings Dropdown -->
+        <div class="hidden sm:flex sm:items-center">
+            <x-dropdown align="right" width="48">
+                <x-slot name="trigger">
+                    <button class="flex items-center text-[#121212]/70 hover:text-[#121212] transition-colors p-2 rounded-full hover:bg-[#121212]/5">
+                        <span class="font-jakarta font-medium text-[15px] mr-2">{{ Auth::user()->name }}</span>
+                        <i class="ph ph-user-circle text-2xl"></i>
+                    </button>
+                </x-slot>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                <x-slot name="content">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault(); this.closest('form').submit();" class="text-red-600 font-medium font-jakarta">
+                            <i class="ph ph-sign-out mr-1"></i> {{ __('Keluar') }}
                         </x-dropdown-link>
+                    </form>
+                </x-slot>
+            </x-dropdown>
+        </div>
 
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+        <!-- Hamburger -->
+        <div class="flex items-center sm:hidden">
+            <button @click="open = ! open" class="p-2 text-[#121212] hover:bg-[#121212]/5 rounded-full transition-colors relative w-10 h-10 flex items-center justify-center">
+                <div class="flex flex-col justify-between w-5 h-4 transform transition-all duration-300 origin-center" :class="open ? 'rotate-180' : ''">
+                    <div class="h-0.5 w-5 bg-current transform transition-all duration-300 origin-left" :class="open ? 'rotate-[42deg] w-6' : ''"></div>
+                    <div class="h-0.5 w-5 bg-current transform transition-all duration-300" :class="open ? 'opacity-0 translate-x-2' : ''"></div>
+                    <div class="h-0.5 w-5 bg-current transform transition-all duration-300 origin-left" :class="open ? '-rotate-[42deg] w-6' : ''"></div>
+                </div>
+            </button>
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+    <!-- Responsive Navigation Menu Dropdown -->
+    <div x-show="open" 
+         x-transition:enter="transition ease-out duration-300" 
+         x-transition:enter-start="opacity-0 translate-y-4 blur-sm" 
+         x-transition:enter-end="opacity-100 translate-y-0 blur-0" 
+         x-transition:leave="transition ease-in duration-200" 
+         x-transition:leave-start="opacity-100 translate-y-0 blur-0" 
+         x-transition:leave-end="opacity-0 translate-y-4 blur-sm" 
+         @click.outside="open = false"
+         class="absolute top-full left-0 right-0 mt-4 w-full outer-shell bg-[#ffffff]/95 backdrop-blur-3xl shadow-ambient sm:hidden" style="display: none;">
+         
+        <div class="p-4 flex flex-col gap-2">
+            @if($isPenjual)
+                <a href="{{ route('dashboard') }}" class="px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-[#121212] text-white' : 'text-[#121212] hover:bg-[#121212]/5' }}">
+                    Dashboard Admin
+                </a>
+                <a href="{{ route('products.index') }}" class="px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('products.*') ? 'bg-[#121212] text-white' : 'text-[#121212] hover:bg-[#121212]/5' }}">
+                    Kelola SKU
+                </a>
+                <a href="{{ route('admin.orders.index') }}" class="px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('admin.orders.*') ? 'bg-[#121212] text-white' : 'text-[#121212] hover:bg-[#121212]/5' }}">
+                    Kelola Pesanan
+                </a>
+                <a href="{{ route('store.index') }}" class="px-4 py-3 rounded-xl text-sm font-medium text-[#121212] border border-[#121212]/10 mt-2">
+                    Lihat Toko
+                </a>
+            @else
+                <a href="{{ route('store.index') }}" class="px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('store.*') ? 'bg-[#121212] text-white' : 'text-[#121212] hover:bg-[#121212]/5' }}">
+                    Katalog
+                </a>
+            @endif
+            
+            <div class="border-t border-[#121212]/10 mt-2 pt-2">
+                <div class="px-4 py-2">
+                    <div class="font-semibold text-[#121212]">{{ Auth::user()->name }}</div>
+                    <div class="text-xs text-[#121212]/60">{{ Auth::user()->email }}</div>
+                </div>
+                <form method="POST" action="{{ route('logout') }}" class="mt-2">
                     @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
+                    <button type="submit" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50">
+                        Keluar
+                    </button>
                 </form>
             </div>
         </div>

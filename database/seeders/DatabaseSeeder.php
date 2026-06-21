@@ -14,28 +14,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Admin
+        // Create Penjual (Seller/Admin)
         User::factory()->create([
-            'name' => 'Admin Pemilik',
-            'email' => 'admin@kawanniaga.test',
+            'name' => 'Pemilik Toko (Penjual)',
+            'email' => 'penjual@kawanniaga.test',
             'password' => Hash::make('password'),
-            'role' => 'admin',
+            'role' => 'penjual',
         ]);
 
-        // Create Kasir
+        // Create Pembeli (Buyer)
         User::factory()->create([
-            'name' => 'Kasir Toko',
-            'email' => 'kasir@kawanniaga.test',
+            'name' => 'Pelanggan Setia (Pembeli)',
+            'email' => 'pembeli@kawanniaga.test',
             'password' => Hash::make('password'),
-            'role' => 'kasir',
-        ]);
-
-        // Create Gudang
-        User::factory()->create([
-            'name' => 'Staff Gudang',
-            'email' => 'gudang@kawanniaga.test',
-            'password' => Hash::make('password'),
-            'role' => 'gudang',
+            'role' => 'pembeli',
         ]);
 
         // Create Sample Products

@@ -10,12 +10,30 @@ class ProductImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
+        // Fungsi helper untuk mencari key yang cocok
+        $findKey = function(array $possibleKeys) use ($row) {
+            foreach ($possibleKeys as $key) {
+                if (isset($row[$key]) && $row[$key] !== '') {
+                    return $row[$key];
+                }
+            }
+            return null;
+        };
+
+        $name = $findKey(['nama_produk', 'nama', 'name', 'produk']);
+        
+        // Skip jika nama kosong (mungkin baris kosong)
+        if (empty($name)) {
+            return null;
+        }
+
         return new Product([
-            'name'          => $row['nama_produk'] ?? $row['name'],
-            'category'      => $row['kategori'] ?? $row['category'] ?? null,
-            'stock'         => $row['stok'] ?? $row['stock'] ?? 0,
-            'capital_price' => $row['harga_modal'] ?? $row['capital_price'],
-            'selling_price' => $row['harga_jual'] ?? $row['selling_price'],
+            'name'          => $name,
+            'category'      => $findKey(['kategori', 'category', 'tipe']) ?? 'Umum',
+            'description'   => $findKey(['deskripsi', 'description', 'keterangan', 'ket']),
+            'stock'         => (int) ($findKey(['stok', 'stock', 'qty', 'jumlah']) ?? 0),
+            'capital_price' => (int) ($findKey(['harga_modal', 'modal', 'capital_price', 'beli']) ?? 0),
+            'selling_price' => (int) ($findKey(['harga_jual', 'jual', 'selling_price', 'harga']) ?? 0),
         ]);
     }
 }

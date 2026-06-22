@@ -22,8 +22,8 @@
         <!-- Product Bento Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
             <!-- Hero Image Container (Double Bezel) -->
-            <div class="lg:col-span-7 outer-shell group">
-                <div class="inner-core bg-white overflow-hidden relative p-4 flex items-center justify-center min-h-[500px]">
+            <div class="lg:col-span-7 outer-shell group self-start">
+                <div class="inner-core bg-white overflow-hidden relative p-2 md:p-4 flex items-center justify-center aspect-[4/3] md:aspect-square">
                     @if($product->stock < 10)
                     <div class="absolute top-8 left-8 bg-[#121212] text-white font-jakarta text-xs font-semibold px-4 py-2 rounded-full shadow-lg z-20 flex items-center gap-2 border border-white/10 uppercase tracking-widest">
                         <i class="ph ph-fire text-[#FFB800]"></i> Hampir Habis

@@ -35,6 +35,11 @@ if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
             @mkdir($dir, 0755, true);
         }
     }
+    
+    // Force override config jika fungsi config sudah tersedia
+    if (function_exists('config')) {
+        config(['view.compiled' => '/tmp/framework/views']);
+    }
 }
 
 return $app;

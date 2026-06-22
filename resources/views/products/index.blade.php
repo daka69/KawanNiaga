@@ -5,13 +5,29 @@
         </h2>
     </x-slot>
 
-    <div class="py-12" x-data="{ isModalOpen: false }">
+    <div class="py-12" x-data="{ isModalOpen: {{ $errors->any() ? 'true' : 'false' }} }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             @if(session('success'))
                 <div class="outer-shell mb-8 motion-fluid">
                     <div class="inner-core bg-[#121212] text-white p-4 flex items-center gap-3">
                         <i class="ph ph-check-circle text-xl text-green-400"></i>
                         <span class="font-jakarta font-medium">{{ session('success') }}</span>
+                    </div>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="outer-shell mb-8 motion-fluid">
+                    <div class="inner-core bg-red-50 border border-red-100 text-red-700 p-4 flex flex-col gap-2">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-warning-circle text-xl"></i>
+                            <span class="font-jakarta font-semibold">Gagal menyimpan data:</span>
+                        </div>
+                        <ul class="list-disc pl-10 font-jakarta text-sm">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             @endif
@@ -86,49 +102,58 @@
         </div>
 
         <!-- Modal Create -->
-        <div x-show="isModalOpen" style="display: none;" class="fixed inset-0 bg-[#121212]/40 flex items-center justify-center z-50 backdrop-blur-md" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-            <div @click.away="isModalOpen = false" class="outer-shell w-full max-w-lg shadow-ambient" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-8 scale-95">
-                <div class="inner-core bg-white p-8 h-full flex flex-col relative">
-                    <button @click="isModalOpen = false" class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-[#121212]/5 hover:bg-[#121212]/10 text-[#121212] transition-colors"><i class="ph ph-x"></i></button>
-                    
-                    <h2 class="text-2xl font-semibold text-[#121212] mb-6 border-b border-[#121212]/5 pb-4 font-display tracking-tight-display">Registrasi SKU Baru</h2>
-                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
-                        @csrf
-                        <div>
-                            <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Nama Produk</label>
-                            <input type="text" name="name" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Kategori</label>
-                            <input type="text" name="category" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Deskripsi Produk</label>
-                            <textarea name="description" rows="3" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Gambar Produk (Opsional)</label>
-                            <input type="file" name="image" accept="image/*" class="w-full text-[#121212]/70 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#121212]/5 file:text-[#121212] hover:file:bg-[#121212] hover:file:text-white font-jakarta cursor-pointer">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Stok Awal (SOH)</label>
-                            <input type="number" name="stock" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
+        <div x-show="isModalOpen" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Background overlay -->
+                <div x-show="isModalOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-[#121212]/40 backdrop-blur-md transition-opacity" @click="isModalOpen = false" aria-hidden="true"></div>
+
+                <!-- This element is to trick the browser into centering the modal contents. -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <!-- Modal Panel -->
+                <div x-show="isModalOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom outer-shell w-full max-w-xl shadow-ambient text-left overflow-hidden transform transition-all sm:my-8 sm:align-middle relative z-10">
+                    <div class="inner-core bg-white p-8 sm:p-10 flex flex-col relative max-h-[85vh] overflow-y-auto scrollbar-hide">
+                        <button type="button" @click="isModalOpen = false" class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-[#121212]/5 hover:bg-[#121212]/10 text-[#121212] transition-colors z-20"><i class="ph ph-x text-lg"></i></button>
+                        
+                        <h2 class="text-2xl font-semibold text-[#121212] mb-6 border-b border-[#121212]/5 pb-4 font-display tracking-tight-display pr-10" id="modal-title">Registrasi SKU Baru</h2>
+                        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                            @csrf
                             <div>
-                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Harga Modal</label>
-                                <input type="number" name="capital_price" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Nama Produk</label>
+                                <input type="text" name="name" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Harga Jual</label>
-                                <input type="number" name="selling_price" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Kategori</label>
+                                <input type="text" name="category" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
                             </div>
-                        </div>
-                        <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-[#121212]/5">
-                            <button type="button" @click="isModalOpen = false" class="px-6 py-2.5 rounded-full text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212] font-semibold font-jakarta transition-colors">Batal</button>
-                            <button type="submit" class="bg-[#121212] hover:bg-black text-white px-8 py-2.5 rounded-full font-semibold font-jakarta transition-colors shadow-sm">Simpan SKU</button>
-                        </div>
-                    </form>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Deskripsi Produk</label>
+                                <textarea name="description" rows="3" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Gambar Produk (Opsional)</label>
+                                <input type="file" name="image" accept="image/*" class="w-full text-[#121212]/70 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#121212]/5 file:text-[#121212] hover:file:bg-[#121212] hover:file:text-white font-jakarta cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Stok Awal (SOH)</label>
+                                <input type="number" name="stock" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Harga Modal</label>
+                                    <input type="number" name="capital_price" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Harga Jual</label>
+                                    <input type="number" name="selling_price" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-[#121212]/5">
+                                <button type="button" @click="isModalOpen = false" class="px-6 py-2.5 rounded-full text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212] font-semibold font-jakarta transition-colors w-full sm:w-auto">Batal</button>
+                                <button type="submit" class="bg-[#121212] hover:bg-black text-white px-8 py-2.5 rounded-full font-semibold font-jakarta transition-colors shadow-sm w-full sm:w-auto">Simpan SKU</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

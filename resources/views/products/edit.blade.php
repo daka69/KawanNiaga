@@ -13,6 +13,19 @@
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-surface-container-lowest p-8 rounded-card shadow-sm border border-outline-variant/30">
+                @if($errors->any())
+                    <div class="mb-6 bg-red-50 border border-red-100 text-red-700 p-4 rounded-xl flex flex-col gap-2">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-warning-circle text-xl"></i>
+                            <span class="font-jakarta font-semibold">Gagal menyimpan data:</span>
+                        </div>
+                        <ul class="list-disc pl-10 font-jakarta text-sm">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     @method('PUT')

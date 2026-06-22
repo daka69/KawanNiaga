@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Sale;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\PromoCode;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
@@ -167,7 +167,6 @@ class CartController extends Controller
         try {
             $realSubtotal = 0;
             $orderItemsData = [];
-            $salesData = [];
 
             foreach ($cart as $id => $details) {
                 // Gunakan lockForUpdate() agar mencegah 2 pembeli membeli stok terakhir bersamaan (Race Condition)
@@ -187,20 +186,14 @@ class CartController extends Controller
                 $total_profit = ($product->selling_price - $product->capital_price) * $quantity;
                 $realSubtotal += $total_price;
 
-                $salesData[] = [
-                    'product_id' => $product->id,
-                    'user_id' => auth()->id(),
-                    'quantity' => $quantity,
-                    'total_price' => $total_price,
-                    'total_profit' => $total_profit,
-                ];
-
                 $orderItemsData[] = [
                     'product_id' => $product->id,
                     'product_name' => $product->name,
                     'quantity' => $quantity,
                     'price' => $product->selling_price,
+                    'capital_price' => $product->capital_price,
                     'subtotal' => $total_price,
+                    'profit' => $total_profit,
                 ];
 
                 $product->decrement('stock', $quantity);
@@ -223,14 +216,10 @@ class CartController extends Controller
                 'status' => 'paid', // Status hardcode untuk demo (Poin 14)
             ]);
 
-            // Simpan items dan sales setelah Order berhasil dibuat
+            // Simpan items setelah Order berhasil dibuat
             foreach ($orderItemsData as $item) {
                 $item['order_id'] = $order->id;
                 OrderItem::create($item);
-            }
-
-            foreach ($salesData as $sale) {
-                Sale::create($sale);
             }
 
             DB::commit();
@@ -260,10 +249,28 @@ class CartController extends Controller
     public function applyPromo(Request $request)
     {
         $request->validate(['promo_code' => 'required|string']);
-        if (strtoupper($request->promo_code) == 'CERIA25') {
-            session()->put('promo_discount', 25000);
-            return redirect()->back()->with('success', 'Promo CERIA25 berhasil diterapkan! Diskon Rp 25.000.');
+        
+        $promo = PromoCode::where('code', strtoupper($request->promo_code))
+            ->where('is_active', true)
+            ->where(function($q) {
+                $q->whereNull('valid_until')->orWhere('valid_until', '>=', now());
+            })->first();
+
+        if ($promo) {
+            $cart = session()->get('cart', []);
+            $subtotal = 0;
+            foreach ($cart as $details) {
+                $subtotal += $details['price'] * $details['quantity'];
+            }
+
+            if ($subtotal < $promo->min_purchase) {
+                return redirect()->back()->with('error', 'Minimal belanja untuk promo ini adalah Rp ' . number_format($promo->min_purchase, 0, ',', '.'));
+            }
+
+            session()->put('promo_discount', $promo->discount_amount);
+            return redirect()->back()->with('success', 'Promo ' . $promo->code . ' berhasil diterapkan! Diskon Rp ' . number_format($promo->discount_amount, 0, ',', '.'));
         }
+
         return redirect()->back()->with('error', 'Kode promo tidak valid atau sudah kadaluarsa.');
     }
 }

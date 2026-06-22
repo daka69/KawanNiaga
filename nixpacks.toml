@@ -1,4 +1,7 @@
 [phases.release]
 cmds = []
 
+[start]
+preCmds = ["php artisan storage:link", "php artisan migrate --force", "php artisan optimize"]
+
 

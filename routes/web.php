@@ -23,6 +23,17 @@ Route::get('/railway-logs', function () {
     return "<pre style='background:#121212;color:#0f0;padding:20px;'>" . implode("", $lines) . "</pre>";
 });
 
+// ROUTE PENYELAMAT: Memperbaiki password yang tidak terenkripsi
+Route::get('/fix-password', function () {
+    $user = \App\Models\User::where('email', 'penjual@kawanniaga.test')->first();
+    if ($user) {
+        $user->password = \Illuminate\Support\Facades\Hash::make('password');
+        $user->save();
+        return "SUKSES! Password akun penjual telah di-reset dan dienkripsi ulang. Silakan login dengan password: password";
+    }
+    return "Akun penjual tidak ditemukan.";
+});
+
 // FALLBACK IMAGE SERVER: Menyajikan gambar langsung jika symlink rusak di server
 Route::get('/storage/products/{filename}', function ($filename) {
     $path = storage_path('app/public/products/' . $filename);

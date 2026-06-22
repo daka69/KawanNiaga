@@ -30,7 +30,7 @@
                     </div>
                     @endif
                     
-                    <img class="w-full h-full object-cover rounded-[1.25rem] group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] z-10" src="{{ $product->image ? asset($product->image) : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" alt="{{ $product->name }}">
+                    <img class="w-full h-full object-cover rounded-[1.25rem] group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] z-10" src="{{ $product->image ? $product->image : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" alt="{{ $product->name }}">
                 </div>
             </div>
 
@@ -127,7 +127,7 @@
                     <a href="{{ route('store.show', $related->id) }}" class="min-w-[260px] max-w-[260px] flex-shrink-0 outer-shell group snap-start block">
                         <div class="inner-core bg-[#fcfcfc] p-2 flex flex-col relative overflow-hidden h-full">
                             <div class="h-[200px] rounded-[1rem] overflow-hidden bg-[#121212]/5 mb-4">
-                                <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" src="{{ $related->image ? asset($related->image) : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" alt="{{ $related->name }}">
+                                <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" src="{{ $related->image ? $related->image : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" alt="{{ $related->name }}">
                             </div>
                             <div class="px-2 pb-2">
                                 <h3 class="font-jakarta font-semibold text-[#121212] mb-1 truncate">{{ $related->name }}</h3>

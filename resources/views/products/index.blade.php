@@ -106,7 +106,7 @@
                                     <td class="p-6 text-right font-semibold text-sm text-[#121212]/60">{{ number_format($p->capital_price, 0, ',', '.') }}</td>
                                     <td class="p-6 text-right font-bold text-[#121212]">{{ number_format($p->selling_price, 0, ',', '.') }}</td>
                                     <td class="p-6 flex justify-center gap-2">
-                                        <button type="button" @click='openEdit(@json($p))' class="text-[#121212]/60 hover:text-[#121212] bg-[#121212]/5 hover:bg-[#121212]/10 rounded-full w-8 h-8 flex items-center justify-center transition-colors"><i class="ph ph-pencil-simple text-lg"></i></button>
+                                        <button type="button" data-product="{{ json_encode($p) }}" @click="openEdit(JSON.parse($el.dataset.product))" class="text-[#121212]/60 hover:text-[#121212] bg-[#121212]/5 hover:bg-[#121212]/10 rounded-full w-8 h-8 flex items-center justify-center transition-colors"><i class="ph ph-pencil-simple text-lg"></i></button>
                                         <form action="{{ route('products.destroy', $p->id) }}" method="POST" onsubmit="return confirm('Hapus SKU ini secara permanen?')">
                                             @csrf
                                             @method('DELETE')

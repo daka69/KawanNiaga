@@ -42,7 +42,7 @@
             <div class="absolute z-20 w-[52%] max-w-[260px] aspect-[3/4] bg-white rounded-[2rem] shadow-2xl shadow-black/10 overflow-hidden border border-black/5 transform rotate-3 translate-x-10 -translate-y-4 hover:rotate-1 hover:translate-x-8 transition-all duration-700">
                 @php $hero1 = $featuredProducts->first(); @endphp
                 @if($hero1)
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover" alt="{{ $hero1->name }}">
+                    <img src="{{ $hero1->image ? asset($hero1->image) : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" class="w-full h-full object-cover" alt="{{ $hero1->name }}">
                     <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
                         <p class="text-white font-jakarta font-semibold text-sm truncate">{{ $hero1->name }}</p>
                         <p class="text-white/70 font-jakarta text-xs">Rp {{ number_format($hero1->selling_price, 0, ',', '.') }}</p>
@@ -55,7 +55,7 @@
             {{-- Secondary card --}}
             <div class="absolute z-10 w-[42%] max-w-[210px] aspect-square bg-white rounded-[2rem] shadow-xl shadow-black/8 overflow-hidden border border-black/5 transform -rotate-6 -translate-x-16 translate-y-14 hover:-rotate-4 hover:-translate-x-14 transition-all duration-700">
                 @php $hero2 = $featuredProducts->skip(1)->first(); @endphp
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover grayscale-[20%]" alt="Sayuran Segar">
+                <img src="{{ $hero2 && $hero2->image ? asset($hero2->image) : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" class="w-full h-full object-cover grayscale-[20%]" alt="Sayuran Segar">
             </div>
 
             {{-- Floating badge --}}
@@ -174,7 +174,7 @@
                 @forelse($featuredProducts as $p)
                 <div class="gsap-product-card opacity-0 group bg-white rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5 border border-black/5 flex flex-col">
                     <a href="{{ route('store.show', $p->id) }}" class="relative aspect-[4/3] overflow-hidden bg-[#f5f4f0] block">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $p->name }}">
+                        <img src="{{ $p->image ? asset($p->image) : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $p->name }}">
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
                             <span class="bg-white text-[#1a1a1a] font-jakarta font-medium text-sm px-5 py-2 rounded-full opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 shadow-lg flex items-center gap-1.5">
                                 <i class="ph ph-eye"></i> Detail

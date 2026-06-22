@@ -73,7 +73,7 @@
                                         <i class="ph ph-eye text-lg"></i> View
                                     </div>
                                 </div>
-                                <img class="w-full h-full object-cover group-hover:scale-105 motion-fluid" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="{{ $p->name }}">
+                                <img class="w-full h-full object-cover group-hover:scale-105 motion-fluid" src="{{ $p->image ? asset($p->image) : 'https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg' }}" alt="{{ $p->name }}">
                             </a>
                             
                             <!-- Content Details -->

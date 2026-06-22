@@ -11,7 +11,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Override storage path for Vercel serverless environment
+        if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
+            $this->app->useStoragePath('/tmp');
+        }
     }
 
     /**
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Override view compiled path for Vercel serverless environment
+        if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
+            config(['view.compiled' => '/tmp/framework/views']);
+        }
     }
 }

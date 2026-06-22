@@ -56,7 +56,7 @@
         @endisset
 
         <!-- Page Content -->
-        <main class="relative z-10 flex-1 py-8 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <main class="flex-1 py-8 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
             {{ $slot }}
         </main>
 

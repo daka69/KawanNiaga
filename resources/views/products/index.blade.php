@@ -148,8 +148,8 @@
                                     <input type="number" name="selling_price" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
                                 </div>
                             </div>
-                            <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-[#121212]/5">
-                                <button type="button" @click="isModalOpen = false" class="px-6 py-2.5 rounded-full text-[#121212]/60 hover:bg-[#121212]/5 hover:text-[#121212] font-semibold font-jakarta transition-colors w-full sm:w-auto">Batal</button>
+                            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8 pt-6 border-t border-[#121212]/5">
+                                <button type="button" @click="isModalOpen = false" class="px-6 py-2.5 rounded-full bg-[#121212]/5 border border-[#121212]/10 text-[#121212] hover:bg-[#121212]/10 font-semibold font-jakarta transition-colors w-full sm:w-auto">Batal</button>
                                 <button type="submit" class="bg-[#121212] hover:bg-black text-white px-8 py-2.5 rounded-full font-semibold font-jakarta transition-colors shadow-sm w-full sm:w-auto">Simpan SKU</button>
                             </div>
                         </form>

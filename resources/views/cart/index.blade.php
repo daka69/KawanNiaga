@@ -33,15 +33,7 @@
                     <div class="outer-shell group">
                         <div class="inner-core bg-white p-4 md:p-6 flex flex-col sm:flex-row items-center gap-6">
                             <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-[1rem] bg-[#121212]/5 overflow-hidden flex-shrink-0 relative flex items-center justify-center">
-                                @if(isset($details['image']) && $details['image'])
-                                    <img class="w-full h-full object-cover object-center absolute" src="{{ str_starts_with($details['image'], 'http') ? $details['image'] : asset($details['image']) }}?v={{ time() }}" alt="{{ $details['name'] }}">
-                                @elseif(strpos(strtolower($details['category']), 'sayur') !== false)
-                                    <img class="w-full h-full object-cover object-center absolute" src="https://loremflickr.com/800/800/meat" alt="{{ $details['name'] }}">
-                                @elseif(strpos(strtolower($details['category']), 'es') !== false)
-                                    <img class="w-full h-full object-cover object-center absolute" src="https://loremflickr.com/800/800/chicken" alt="{{ $details['name'] }}">
-                                @else
-                                    <img class="w-full h-full object-cover object-center absolute" src="https://loremflickr.com/800/800/fish" alt="{{ $details['name'] }}">
-                                @endif
+                                <img class="w-full h-full object-cover object-center absolute" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="{{ $details['name'] }}">
                             </div>
                             <div class="flex-grow flex flex-col w-full">
                                 <div class="flex justify-between items-start mb-2">

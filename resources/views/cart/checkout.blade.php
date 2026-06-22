@@ -153,15 +153,7 @@
                                 @php $subtotal += $details['price'] * $details['quantity']; @endphp
                                 <div class="flex gap-4 items-center">
                                     <div class="w-16 h-16 rounded-[1rem] bg-[#121212]/5 flex-shrink-0 overflow-hidden relative flex items-center justify-center">
-                                        @if(isset($details['image']) && $details['image'])
-                                            <img class="w-[120%] h-[120%] object-cover object-center absolute" src="{{ str_starts_with($details['image'], 'http') ? $details['image'] : asset($details['image']) }}?v={{ time() }}" alt="{{ $details['name'] }}">
-                                        @elseif(strpos(strtolower($details['category']), 'sayur') !== false)
-                                            <img class="w-[120%] h-[120%] object-cover object-center absolute" src="https://loremflickr.com/400/400/meat">
-                                        @elseif(strpos(strtolower($details['category']), 'es') !== false)
-                                            <img class="w-[120%] h-[120%] object-cover object-center absolute" src="https://loremflickr.com/400/400/chicken">
-                                        @else
-                                            <img class="w-[120%] h-[120%] object-cover object-center absolute" src="https://loremflickr.com/400/400/fish">
-                                        @endif
+                                        <img class="w-[120%] h-[120%] object-cover object-center absolute" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="{{ $details['name'] }}">
                                     </div>
                                     <div class="flex-grow font-jakarta">
                                         <p class="font-semibold text-[#121212] line-clamp-1">{{ $details['name'] }}</p>

@@ -98,11 +98,7 @@
                                 @foreach($order->items as $item)
                                 <div class="p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-white hover:bg-[#121212]/[0.02] transition-colors">
                                     <div class="w-16 h-16 bg-[#121212]/5 rounded-xl border border-[#121212]/10 flex items-center justify-center overflow-hidden flex-shrink-0">
-                                        @if($item->product && $item->product->image)
-                                            <img src="{{ str_starts_with($item->product->image, 'http') ? $item->product->image : asset($item->product->image) }}" class="w-full h-full object-cover">
-                                        @else
-                                            <i class="ph ph-image text-2xl text-[#121212]/20"></i>
-                                        @endif
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover">
                                     </div>
                                     <div class="flex-grow">
                                         <h4 class="text-[#121212] font-semibold font-jakarta">{{ $item->product_name }}</h4>

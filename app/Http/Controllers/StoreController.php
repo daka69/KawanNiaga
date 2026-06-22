@@ -9,13 +9,19 @@ class StoreController extends Controller
 {
     public function index()
     {
-        // Beranda hanya menampilkan 4 produk pilihan (misalnya yang terbaru/terlaris)
         $featuredProducts = Product::where('stock', '>', 0)
             ->inRandomOrder()
             ->limit(4)
             ->get();
 
-        return view('store.index', compact('featuredProducts'));
+        $categories = Product::where('stock', '>', 0)
+            ->whereNotNull('category')
+            ->distinct()
+            ->pluck('category');
+
+        $totalProducts = Product::where('stock', '>', 0)->count();
+
+        return view('store.index', compact('featuredProducts', 'categories', 'totalProducts'));
     }
 
     public function catalog(Request $request)

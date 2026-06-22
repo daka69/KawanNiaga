@@ -73,11 +73,7 @@
                                         <i class="ph ph-eye text-lg"></i> View
                                     </div>
                                 </div>
-                                @if($p->image)
-                                    <img class="w-full h-full object-cover group-hover:scale-105 motion-fluid" src="{{ str_starts_with($p->image, 'http') ? $p->image : asset($p->image) }}?v={{ time() }}" alt="{{ $p->name }}" onerror="this.onerror=null; this.src='https://loremflickr.com/600/600/food';">
-                                @else
-                                    <img class="w-full h-full object-cover group-hover:scale-105 motion-fluid" src="https://loremflickr.com/600/600/dish" alt="{{ $p->name }}">
-                                @endif
+                                <img class="w-full h-full object-cover group-hover:scale-105 motion-fluid" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="{{ $p->name }}">
                             </a>
                             
                             <!-- Content Details -->

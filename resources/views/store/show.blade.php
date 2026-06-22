@@ -30,15 +30,7 @@
                     </div>
                     @endif
                     
-                    @if($product->image)
-                        <img class="w-full h-full object-cover rounded-[1.25rem] group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] z-10" src="{{ str_starts_with($product->image, 'http') ? $product->image : asset($product->image) }}?v={{ time() }}" alt="{{ $product->name }}" onerror="this.onerror=null; this.src='https://loremflickr.com/800/800/food';">
-                    @elseif(strpos(strtolower($product->category), 'sayur') !== false)
-                        <img class="w-full h-full object-cover rounded-[1.25rem] group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] z-10" src="https://loremflickr.com/800/800/meat" alt="{{ $product->name }}">
-                    @elseif(strpos(strtolower($product->category), 'es') !== false)
-                        <img class="w-full h-full object-cover rounded-[1.25rem] group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] z-10" src="https://loremflickr.com/800/800/chicken" alt="{{ $product->name }}">
-                    @else
-                        <img class="w-full h-full object-cover rounded-[1.25rem] group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] z-10" src="https://loremflickr.com/800/800/fish" alt="{{ $product->name }}">
-                    @endif
+                    <img class="w-full h-full object-cover rounded-[1.25rem] group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] z-10" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="{{ $product->name }}">
                 </div>
             </div>
 
@@ -70,7 +62,7 @@
                         @endif
 
                         @auth
-                        <form action="{{ route('cart.add') }}" method="POST" class="mt-auto space-y-6">
+                        <form id="addToCartForm" action="{{ route('cart.add') }}" method="POST" class="mt-auto space-y-6">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             
@@ -88,10 +80,23 @@
                                 </div>
                             </div>
 
-                            <!-- CTA -->
-                            <div class="flex gap-4">
-                                <button type="submit" class="w-full bg-[#121212] text-white font-jakarta font-semibold text-lg py-4 rounded-full shadow-sm hover:bg-black transition-colors flex items-center justify-center gap-2 group active:scale-95 duration-150">
-                                    <i class="ph ph-shopping-bag text-xl"></i> Tambah ke Keranjang
+                            <!-- CTA (Animated Button) -->
+                            <div class="flex gap-4" x-data="{ adding: false }">
+                                <button type="button" @click="adding = true; setTimeout(() => document.getElementById('addToCartForm').submit(), 1000)"
+                                    class="relative overflow-hidden w-full text-white font-jakarta font-semibold text-lg py-4 rounded-full shadow-sm transition-all duration-500 flex items-center justify-center group"
+                                    :class="adding ? 'bg-[#121212]/80 scale-[0.98] cursor-wait' : 'bg-[#121212] hover:bg-black active:scale-[0.98]'">
+                                    
+                                    <!-- Default State -->
+                                    <div class="flex items-center gap-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]" 
+                                         :class="adding ? '-translate-y-10 opacity-0' : 'translate-y-0 opacity-100'">
+                                        <i class="ph ph-shopping-bag text-xl"></i> Tambah ke Keranjang
+                                    </div>
+
+                                    <!-- Loading/Adding State -->
+                                    <div class="absolute inset-0 flex items-center justify-center gap-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]" 
+                                         :class="adding ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'">
+                                        <i class="ph ph-circle-notch animate-spin text-xl"></i> Mengemas...
+                                    </div>
                                 </button>
                             </div>
                         </form>
@@ -122,11 +127,7 @@
                     <a href="{{ route('store.show', $related->id) }}" class="min-w-[260px] max-w-[260px] flex-shrink-0 outer-shell group snap-start block">
                         <div class="inner-core bg-[#fcfcfc] p-2 flex flex-col relative overflow-hidden h-full">
                             <div class="h-[200px] rounded-[1rem] overflow-hidden bg-[#121212]/5 mb-4">
-                                @if($related->image)
-                                    <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" src="{{ str_starts_with($related->image, 'http') ? $related->image : asset($related->image) }}" alt="{{ $related->name }}" onerror="this.onerror=null; this.src='https://loremflickr.com/800/800/food';">
-                                @else
-                                    <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" src="https://loremflickr.com/800/800/dish" alt="{{ $related->name }}">
-                                @endif
+                                <img class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="{{ $related->name }}">
                             </div>
                             <div class="px-2 pb-2">
                                 <h3 class="font-jakarta font-semibold text-[#121212] mb-1 truncate">{{ $related->name }}</h3>

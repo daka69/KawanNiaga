@@ -77,11 +77,7 @@
                             <div class="flex flex-col sm:flex-row gap-6 items-start sm:items-center pb-6 border-b border-[#121212]/5 last:border-0 last:pb-0">
                                 <!-- Image fallback logic -->
                                 <div class="w-24 h-24 rounded-2xl bg-[#fcfcfc] flex-shrink-0 overflow-hidden relative flex items-center justify-center border border-[#121212]/10 shadow-sm">
-                                    @if($item->product && $item->product->image)
-                                        <img class="w-[120%] h-[120%] object-cover object-center absolute" src="{{ str_starts_with($item->product->image, 'http') ? $item->product->image : asset($item->product->image) }}?v={{ time() }}" alt="{{ $item->product_name }}">
-                                    @else
-                                        <i class="ph ph-package text-4xl text-[#121212]/20"></i>
-                                    @endif
+                                    <img class="w-[120%] h-[120%] object-cover object-center absolute" src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="{{ $item->product_name }}">
                                 </div>
                                 
                                 <div class="flex-grow w-full font-jakarta">

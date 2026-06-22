@@ -1,301 +1,315 @@
 <x-storefront-layout>
-    <main class="flex-grow pt-[140px] md:pt-[160px] relative z-10">
-        <!-- The Editorial Split Hero -->
-        <section class="relative w-full max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-16 lg:gap-24 items-center justify-between min-h-[75vh] mb-8">
-            <!-- Left: Massive Typography -->
-            <div class="w-full lg:w-1/2 flex flex-col gap-8 gsap-hero-container">
-                <div class="gsap-hero-el opacity-0 inline-flex items-center gap-3 px-4 py-2 rounded-full outer-shell w-max">
-                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                    <span class="text-[11px] font-jakarta font-semibold tracking-widest uppercase text-[#121212]/60">Sajian Premium</span>
-                </div>
-                
-                <h1 class="gsap-hero-el opacity-0 text-6xl md:text-7xl lg:text-[5.5rem] leading-[1.05] font-display font-semibold tracking-tight-display text-[#121212]">
-                    Praktis.<br>Lezat.<br><span class="text-[#121212]/30">Segar.</span>
-                </h1>
-                
-                <p class="gsap-hero-el opacity-0 text-lg md:text-xl font-jakarta text-[#121212]/60 max-w-md leading-relaxed">
-                    Kualitas hidangan restoran, kini hadir di meja makan Anda. Kami kurasi bahan baku terbaik untuk kebahagiaan keluarga Anda.
-                </p>
-                
-                <!-- Double Bezel CTA / Magnetic -->
-                <div class="gsap-hero-el opacity-0 mt-4">
-                    <a href="#katalog" class="group inline-flex items-center bg-[#121212] text-white rounded-full pl-8 pr-2 py-2 btn-magnetic shadow-ambient">
-                        <span class="font-jakarta font-medium text-[16px] mr-6">Eksplorasi Katalog</span>
-                        <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center inner-icon">
-                            <i class="ph ph-arrow-down text-lg"></i>
-                        </div>
-                    </a>
-                </div>
+<main class="flex-grow relative z-10">
+
+    {{-- ══════════════════════════════════════
+         HERO SECTION
+    ══════════════════════════════════════ --}}
+    <section class="w-full max-w-[1400px] mx-auto px-6 md:px-12 pt-[130px] md:pt-[150px] pb-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+
+        {{-- Left: Text --}}
+        <div class="w-full lg:w-[55%] flex flex-col gap-7">
+            <div class="inline-flex items-center gap-2.5 bg-green-50 border border-green-200 text-green-700 px-4 py-1.5 rounded-full w-max">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse block"></span>
+                <span class="text-[12px] font-jakarta font-semibold tracking-wider uppercase">Bahan Segar Setiap Hari</span>
             </div>
 
-            <!-- Right: Z-Axis Cascade Imagery -->
-            <div class="gsap-hero-images opacity-0 w-full lg:w-1/2 relative h-[400px] md:h-[500px] flex items-center justify-center">
-                <!-- Ambient Glow -->
-                <div class="absolute inset-0 bg-[#121212]/5 rounded-full transform scale-75 blur-3xl z-0"></div>
-                
-                <!-- Main Focus Card (Double-Bezel) -->
-                <div class="absolute z-20 w-[55%] max-w-[280px] aspect-[3/4] outer-shell transform rotate-2 translate-x-12 -translate-y-4 hover:rotate-0 hover:translate-x-8 hover:-translate-y-6 motion-fluid shadow-ambient">
-                    <div class="inner-core w-full h-full p-2 overflow-hidden relative group">
-                        <img class="w-full h-full object-cover rounded-[1.5rem] group-hover:scale-105 motion-fluid" src="https://loremflickr.com/800/1200/meat" alt="Premium Meat">
-                        <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-xl rounded-2xl p-4 shadow-sm border border-white/50">
-                            <p class="text-sm font-jakarta font-semibold text-[#121212]">Premium Quality</p>
-                            <p class="text-[10px] text-[#121212]/50 uppercase tracking-widest mt-1">Ready to Cook</p>
-                        </div>
+            <h1 class="text-[3.5rem] md:text-[4.5rem] lg:text-[5rem] leading-[1.08] font-display font-semibold text-[#1a1a1a] tracking-tight">
+                Belanja Bahan<br>
+                <span class="text-[#1a1a1a]/30">Makanan Segar,</span><br>
+                Tanpa Repot.
+            </h1>
+
+            <p class="text-[1.1rem] font-jakarta text-[#1a1a1a]/60 max-w-lg leading-relaxed">
+                Dari dapur restoran ke meja makan Anda. Temukan daging, seafood, sayuran beku, dan bahan masak berkualitas premium — dikirim langsung ke pintu rumah Anda.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
+                <a href="{{ route('store.catalog') }}" class="bg-[#1a1a1a] text-white font-jakarta font-semibold text-[15px] px-8 py-4 rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg shadow-black/10 flex items-center gap-2">
+                    Mulai Belanja <i class="ph ph-arrow-right"></i>
+                </a>
+                <a href="{{ route('store.catalog') }}" class="text-[#1a1a1a] font-jakarta font-medium text-[15px] px-6 py-4 rounded-full border border-[#1a1a1a]/10 hover:bg-[#1a1a1a]/5 transition-all flex items-center gap-2">
+                    <i class="ph ph-magnifying-glass"></i> Jelajahi Katalog
+                </a>
+            </div>
+        </div>
+
+        {{-- Right: Product Image Stack --}}
+        <div class="w-full lg:w-[45%] relative h-[380px] md:h-[460px] flex items-center justify-center flex-shrink-0">
+            {{-- Background blob --}}
+            <div class="absolute w-[70%] h-[70%] rounded-full bg-orange-50 blur-3xl z-0 top-[15%] left-[15%]"></div>
+
+            {{-- Main product card --}}
+            <div class="absolute z-20 w-[52%] max-w-[260px] aspect-[3/4] bg-white rounded-[2rem] shadow-2xl shadow-black/10 overflow-hidden border border-black/5 transform rotate-3 translate-x-10 -translate-y-4 hover:rotate-1 hover:translate-x-8 transition-all duration-700">
+                @php $hero1 = $featuredProducts->first(); @endphp
+                @if($hero1)
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover" alt="{{ $hero1->name }}">
+                    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
+                        <p class="text-white font-jakarta font-semibold text-sm truncate">{{ $hero1->name }}</p>
+                        <p class="text-white/70 font-jakarta text-xs">Rp {{ number_format($hero1->selling_price, 0, ',', '.') }}</p>
                     </div>
+                @else
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover" alt="Produk Segar">
+                @endif
+            </div>
+
+            {{-- Secondary card --}}
+            <div class="absolute z-10 w-[42%] max-w-[210px] aspect-square bg-white rounded-[2rem] shadow-xl shadow-black/8 overflow-hidden border border-black/5 transform -rotate-6 -translate-x-16 translate-y-14 hover:-rotate-4 hover:-translate-x-14 transition-all duration-700">
+                @php $hero2 = $featuredProducts->skip(1)->first(); @endphp
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover grayscale-[20%]" alt="Sayuran Segar">
+            </div>
+
+            {{-- Floating badge --}}
+            <div class="absolute z-30 top-6 left-4 bg-white rounded-2xl px-4 py-3 shadow-xl shadow-black/10 border border-black/5 flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                    <i class="ph ph-check-circle text-green-600 text-lg"></i>
                 </div>
-                
-                <!-- Secondary Stacked Card -->
-                <div class="absolute z-10 w-[45%] max-w-[220px] aspect-square outer-shell transform -rotate-6 -translate-x-16 translate-y-16 hover:-rotate-3 hover:-translate-x-20 hover:translate-y-12 motion-fluid">
-                    <div class="inner-core w-full h-full p-2 overflow-hidden relative group">
-                        <img class="w-full h-full object-cover rounded-[1.5rem] group-hover:scale-105 motion-fluid grayscale hover:grayscale-0" src="https://loremflickr.com/800/800/fish" alt="Fresh Salmon">
-                    </div>
+                <div>
+                    <p class="text-[11px] text-[#1a1a1a]/50 font-jakarta">Stok Tersedia</p>
+                    <p class="text-[13px] font-jakarta font-semibold text-[#1a1a1a]">{{ $totalProducts }}+ Produk</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- How It Works Section -->
-        <section class="w-full bg-[#121212] relative z-10 py-20">
-            <div class="max-w-[1400px] mx-auto px-6 md:px-12">
-                <h2 class="text-center text-3xl md:text-4xl font-display font-semibold text-white mb-16 tracking-tight-display">Mudah, Cepat, Segar.</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
-                    <!-- Step 1 -->
-                    <div class="gsap-step-card opacity-0 flex flex-col items-center text-center px-8 py-8 relative">
-                        <div class="absolute top-8 right-0 hidden md:block w-px h-24 bg-white/10"></div>
-                        <span class="text-[80px] font-display font-semibold text-white/10 leading-none mb-4">01</span>
-                        <h3 class="text-xl font-display font-semibold text-white mb-3">Pilih Produk</h3>
-                        <p class="text-white/50 font-jakarta text-sm leading-relaxed">Jelajahi katalog kami dan temukan bahan makanan segar yang Anda butuhkan.</p>
-                    </div>
-                    <!-- Step 2 -->
-                    <div class="gsap-step-card opacity-0 flex flex-col items-center text-center px-8 py-8 relative">
-                        <div class="absolute top-8 right-0 hidden md:block w-px h-24 bg-white/10"></div>
-                        <span class="text-[80px] font-display font-semibold text-white/10 leading-none mb-4">02</span>
-                        <h3 class="text-xl font-display font-semibold text-white mb-3">Tambah ke Keranjang</h3>
-                        <p class="text-white/50 font-jakarta text-sm leading-relaxed">Atur kuantitas pesanan sesuai kebutuhan dan proses checkout dengan mudah.</p>
-                    </div>
-                    <!-- Step 3 -->
-                    <div class="gsap-step-card opacity-0 flex flex-col items-center text-center px-8 py-8">
-                        <span class="text-[80px] font-display font-semibold text-white/10 leading-none mb-4">03</span>
-                        <h3 class="text-xl font-display font-semibold text-white mb-3">Terima di Rumah</h3>
-                        <p class="text-white/50 font-jakarta text-sm leading-relaxed">Bahan makanan segar tiba langsung di depan pintu Anda, siap diolah.</p>
-                    </div>
+    {{-- ══════════════════════════════════════
+         SOCIAL PROOF STRIP (Warm & Light)
+    ══════════════════════════════════════ --}}
+    <section class="w-full border-y border-orange-100 bg-orange-50/50 py-8 mt-12 relative z-20">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-4 text-center sm:text-left">
+            <div class="gsap-stat flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0">
+                    <i class="ph ph-users text-2xl"></i>
+                </div>
+                <div>
+                    <p class="text-2xl font-display font-semibold text-[#1a1a1a] mb-0.5">500+</p>
+                    <p class="text-sm font-jakarta text-[#1a1a1a]/60">Pelanggan Aktif</p>
                 </div>
             </div>
-        </section>
-
-        <!-- Features / Value Proposition Section -->
-        <section class="max-w-[1400px] mx-auto px-6 md:px-12 py-16 mb-8 border-b border-[#121212]/5 relative z-10 bg-[#FDFBF7]">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24">
-                <div class="gsap-feature-card opacity-0 flex flex-col items-center text-center group">
-                    <div class="w-20 h-20 rounded-full bg-[#121212]/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#121212] group-hover:text-white transition-all duration-300">
-                        <i class="ph ph-plant text-3xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-semibold text-[#121212] mb-3">100% Segar Harian</h3>
-                    <p class="text-[#121212]/60 font-jakarta leading-relaxed">Bahan baku dipanen dan dipotong setiap pagi, memastikan kesegaran optimal hingga ke dapur Anda.</p>
+            <div class="gsap-stat flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center flex-shrink-0">
+                    <i class="ph ph-package text-2xl"></i>
                 </div>
-                <div class="gsap-feature-card opacity-0 flex flex-col items-center text-center group">
-                    <div class="w-20 h-20 rounded-full bg-[#121212]/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#121212] group-hover:text-white transition-all duration-300">
-                        <i class="ph ph-shield-check text-3xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-semibold text-[#121212] mb-3">Kualitas Restoran</h3>
-                    <p class="text-[#121212]/60 font-jakarta leading-relaxed">Standar kebersihan dan seleksi ketat yang biasa digunakan oleh koki restoran bintang lima.</p>
-                </div>
-                <div class="gsap-feature-card opacity-0 flex flex-col items-center text-center group">
-                    <div class="w-20 h-20 rounded-full bg-[#121212]/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#121212] group-hover:text-white transition-all duration-300">
-                        <i class="ph ph-truck text-3xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-display font-semibold text-[#121212] mb-3">Pengiriman Cepat</h3>
-                    <p class="text-[#121212]/60 font-jakarta leading-relaxed">Didukung dengan armada pengiriman berpendingin khusus, tiba di depan pintu Anda di hari yang sama.</p>
+                <div>
+                    <p class="text-2xl font-display font-semibold text-[#1a1a1a] mb-0.5">{{ $totalProducts }}+</p>
+                    <p class="text-sm font-jakarta text-[#1a1a1a]/60">Pilihan Produk</p>
                 </div>
             </div>
-        </section>
+            <div class="gsap-stat flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                    <i class="ph ph-truck text-2xl"></i>
+                </div>
+                <div>
+                    <p class="text-2xl font-display font-semibold text-[#1a1a1a] mb-0.5">Setiap Hari</p>
+                    <p class="text-sm font-jakarta text-[#1a1a1a]/60">Pengiriman Aktif</p>
+                </div>
+            </div>
+            <div class="gsap-stat flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center flex-shrink-0">
+                    <i class="ph ph-star text-2xl"></i>
+                </div>
+                <div>
+                    <p class="text-2xl font-display font-semibold text-[#1a1a1a] mb-0.5">4.9/5</p>
+                    <p class="text-sm font-jakarta text-[#1a1a1a]/60">Rating Pelanggan</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Main Content Area -->
-        <section class="max-w-[1400px] mx-auto px-6 md:px-12 py-16 flex flex-col lg:flex-row gap-16 relative" id="katalog">
-            
+    {{-- ══════════════════════════════════════
+         CATEGORY VISUAL GRID
+    ══════════════════════════════════════ --}}
+    <section class="w-full max-w-[1400px] mx-auto px-6 md:px-12 py-20">
+        <div class="flex items-end justify-between mb-10">
+            <div>
+                <h2 class="text-4xl font-display font-semibold text-[#1a1a1a] tracking-tight">Cari Berdasarkan<br>Kategori</h2>
+            </div>
+            <a href="{{ route('store.catalog') }}" class="text-[#1a1a1a]/50 hover:text-[#1a1a1a] font-jakarta font-medium text-sm transition-colors flex items-center gap-1">
+                Semua Produk <i class="ph ph-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            @forelse($categories as $cat)
+            <a href="{{ route('store.catalog', ['category' => $cat]) }}" class="gsap-cat-card opacity-0 group relative overflow-hidden rounded-[1.5rem] bg-[#f5f4f0] aspect-[4/3] flex items-end shadow-sm hover:shadow-lg transition-all duration-500">
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg"
+                    alt="{{ $cat }}"
+                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                >
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+                <div class="relative z-10 p-5 w-full">
+                    <h3 class="text-white font-display font-semibold text-lg leading-tight">{{ $cat }}</h3>
+                    <p class="text-white/60 font-jakarta text-xs mt-1 flex items-center gap-1">Lihat Produk <i class="ph ph-arrow-right text-[10px]"></i></p>
+                </div>
+            </a>
+            @empty
+            <p class="col-span-4 text-center text-[#1a1a1a]/40 font-jakarta py-8">Belum ada kategori.</p>
+            @endforelse
+        </div>
+    </section>
+
+    {{-- ══════════════════════════════════════
+         PRODUK TERLARIS
+    ══════════════════════════════════════ --}}
+    <section class="w-full bg-[#f9f8f5] py-20">
+        <div class="max-w-[1400px] mx-auto px-6 md:px-12">
+            <div class="flex items-end justify-between mb-10">
+                <div>
+                    <h2 class="text-4xl font-display font-semibold text-[#1a1a1a] tracking-tight">Produk Terlaris</h2>
+                    <p class="text-[#1a1a1a]/50 font-jakarta mt-2">Pilihan favorit dari pelanggan setia kami</p>
+                </div>
+                <a href="{{ route('store.catalog') }}" class="hidden sm:flex text-[#1a1a1a]/50 hover:text-[#1a1a1a] font-jakarta font-medium text-sm transition-colors items-center gap-1">
+                    Lihat Semua <i class="ph ph-arrow-right"></i>
+                </a>
+            </div>
+
             @if(session('error'))
-                <div class="absolute top-0 left-0 w-full bg-red-50 border border-red-200 text-red-800 px-6 py-4 rounded-2xl mb-8 shadow-sm z-50 text-center font-jakarta">
-                    <span class="block sm:inline font-semibold">{{ session('error') }}</span>
-                </div>
+                <div class="bg-red-50 border border-red-200 text-red-800 px-6 py-4 rounded-2xl mb-8 font-jakarta text-center">{{ session('error') }}</div>
             @endif
             @if(session('success'))
-                <div class="absolute top-0 left-0 w-full bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-2xl mb-8 shadow-sm z-50 text-center font-jakarta">
-                    <span class="block sm:inline font-semibold">{{ session('success') }}</span>
-                </div>
+                <div class="bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-2xl mb-8 font-jakarta text-center">{{ session('success') }}</div>
             @endif
 
-            <!-- Featured Header -->
-            <div class="flex-grow w-full">
-                <div class="flex items-center justify-between mb-12">
-                    <h2 class="text-4xl font-display font-semibold text-[#121212] tracking-tight-display">Produk Terlaris</h2>
-                    <a href="{{ route('store.catalog') }}" class="text-[#121212]/60 hover:text-[#121212] font-jakarta font-medium transition-colors flex items-center gap-2">
-                        Lihat Semua <i class="ph ph-arrow-right"></i>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                @forelse($featuredProducts as $p)
+                <div class="gsap-product-card opacity-0 group bg-white rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1.5 border border-black/5 flex flex-col">
+                    <a href="{{ route('store.show', $p->id) }}" class="relative aspect-[4/3] overflow-hidden bg-[#f5f4f0] block">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="{{ $p->name }}">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                            <span class="bg-white text-[#1a1a1a] font-jakarta font-medium text-sm px-5 py-2 rounded-full opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 shadow-lg flex items-center gap-1.5">
+                                <i class="ph ph-eye"></i> Detail
+                            </span>
+                        </div>
                     </a>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-                    @forelse($featuredProducts as $p)
-                    <div class="gsap-product-card opacity-0 outer-shell group hover:-translate-y-2 motion-fluid shadow-sm hover:shadow-ambient">
-                        <div class="inner-core h-full flex flex-col p-2 relative overflow-hidden bg-white">
-                            @if($loop->first)
-                                <div class="absolute top-6 left-6 z-20 bg-[#121212] text-white px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest font-semibold shadow-xl border border-white/10">Bestseller</div>
-                            @endif
-                            
-                            <!-- Image Container -->
-                            <a href="{{ route('store.show', $p->id) }}" class="relative w-full aspect-[4/3] rounded-[1.25rem] bg-[#f5f5f5] overflow-hidden mb-4 cursor-pointer block">
-                                <div class="absolute inset-0 bg-[#121212]/0 group-hover:bg-[#121212]/5 transition-colors z-10 flex items-center justify-center">
-                                    <div class="bg-white/90 backdrop-blur-md text-[#121212] px-6 py-2 rounded-full font-jakarta font-medium text-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 flex items-center gap-2 shadow-sm border border-white">
-                                        <i class="ph ph-eye text-lg"></i> View
-                                    </div>
-                                </div>
-                                @if($p->image)
-                                    <img class="w-full h-full object-cover group-hover:scale-105 motion-fluid" src="{{ str_starts_with($p->image, 'http') ? $p->image : asset($p->image) }}?v={{ time() }}" alt="{{ $p->name }}" onerror="this.onerror=null; this.src='https://loremflickr.com/600/600/food';">
-                                @else
-                                    <img class="w-full h-full object-cover group-hover:scale-105 motion-fluid" src="https://loremflickr.com/600/600/dish" alt="{{ $p->name }}">
-                                @endif
-                            </a>
-                            
-                            <!-- Content Details -->
-                            <div class="px-4 pb-4 flex flex-col flex-grow">
-                                <span class="text-[10px] uppercase tracking-widest text-[#121212]/40 font-semibold mb-2 block">{{ $p->category }}</span>
-                                <a href="{{ route('store.show', $p->id) }}" class="text-2xl font-display font-medium text-[#121212] mb-6 line-clamp-2 hover:opacity-70 transition-opacity">{{ $p->name }}</a>
-                                
-                                <div class="mt-auto flex items-center justify-between border-t border-[#121212]/5 pt-4">
-                                    <span class="text-xl font-jakarta font-semibold text-[#121212]">Rp {{ number_format($p->selling_price, 0, ',', '.') }}</span>
-                                    @auth
-                                        <form action="{{ route('cart.add') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $p->id }}">
-                                            <input type="hidden" name="quantity" value="1">
-                                            <button type="submit" class="w-12 h-12 rounded-full bg-[#121212]/5 text-[#121212] hover:bg-[#121212] hover:text-white flex items-center justify-center transition-colors shadow-sm active:scale-95 duration-150">
-                                                <i class="ph ph-shopping-bag text-xl"></i>
-                                            </button>
-                                        </form>
-                                    @else
-                                        <a href="{{ route('login') }}" class="w-12 h-12 rounded-full bg-[#121212]/5 text-[#121212] hover:bg-[#121212] hover:text-white flex items-center justify-center transition-colors shadow-sm active:scale-95 duration-150">
-                                            <i class="ph ph-shopping-bag text-xl"></i>
-                                        </a>
-                                    @endauth
-                                </div>
-                            </div>
+                    <div class="p-5 flex flex-col flex-grow">
+                        <span class="text-[10px] uppercase tracking-widest text-[#1a1a1a]/40 font-semibold mb-1.5 font-jakarta">{{ $p->category }}</span>
+                        <a href="{{ route('store.show', $p->id) }}" class="font-display font-semibold text-[#1a1a1a] text-lg leading-tight mb-auto hover:opacity-70 transition-opacity line-clamp-2">{{ $p->name }}</a>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-black/5">
+                            <span class="font-jakarta font-bold text-[#1a1a1a] text-lg">Rp {{ number_format($p->selling_price, 0, ',', '.') }}</span>
+                            @auth
+                                <form action="{{ route('cart.add') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $p->id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="w-11 h-11 rounded-full bg-[#1a1a1a]/5 text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white flex items-center justify-center transition-colors active:scale-90 duration-150">
+                                        <i class="ph ph-shopping-bag text-lg"></i>
+                                    </button>
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}" class="w-11 h-11 rounded-full bg-[#1a1a1a]/5 text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white flex items-center justify-center transition-colors active:scale-90 duration-150">
+                                    <i class="ph ph-shopping-bag text-lg"></i>
+                                </a>
+                            @endauth
                         </div>
                     </div>
-                    @empty
-                    <div class="col-span-12 outer-shell">
-                        <div class="inner-core p-16 text-center flex flex-col items-center justify-center">
-                            <div class="w-20 h-20 bg-[#121212]/5 rounded-full flex items-center justify-center mb-6">
-                                <i class="ph ph-package text-4xl text-[#121212]/40"></i>
-                            </div>
-                            <h3 class="text-3xl font-display font-medium text-[#121212] mb-3 tracking-tight-display">Katalog Kosong</h3>
-                            <p class="text-[#121212]/60 font-jakarta max-w-md">Belum ada produk yang ditambahkan ke toko saat ini. Silakan cek kembali nanti.</p>
-                        </div>
-                    </div>
-                    @endforelse
                 </div>
-                
-                </div>
-                
-                <div class="mt-16 flex justify-center">
-                    <a href="{{ route('store.catalog') }}" class="bg-white border border-[#121212]/10 text-[#121212] rounded-full px-8 py-4 font-jakarta font-semibold text-lg hover:bg-[#121212]/5 transition-colors shadow-sm inline-flex items-center gap-2 group active:scale-95 duration-150">
-                        Jelajahi Semua Produk <i class="ph ph-arrow-right group-hover:translate-x-2 transition-transform"></i>
-                    </a>
-                </div>
+                @empty
+                <div class="col-span-4 text-center py-16 text-[#1a1a1a]/40 font-jakarta">Belum ada produk tersedia.</div>
+                @endforelse
             </div>
-        </section>
 
-        <!-- Cinematic Promo Banner -->
-        <section class="max-w-[1400px] mx-auto px-6 md:px-12 py-16 mb-32">
-            <div class="gsap-promo-banner opacity-0 relative w-full rounded-[2rem] overflow-hidden bg-[#121212] h-[400px] md:h-[500px] flex items-center justify-center group shadow-ambient">
-                <img class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 group-hover:opacity-40 transition-all duration-1000" src="https://loremflickr.com/1600/900/grill" alt="Promo Promo">
-                <div class="relative z-10 text-center px-6 max-w-3xl flex flex-col items-center">
-                    <span class="text-white/80 font-jakarta font-semibold tracking-widest uppercase text-sm mb-4 block">Eksklusif Akhir Pekan</span>
-                    <h2 class="text-5xl md:text-7xl font-display font-semibold text-white mb-6 tracking-tight-display leading-tight">Pesta BBQ Keluarga Di Rumah.</h2>
-                    <a href="{{ route('store.catalog') }}" class="mt-4 bg-white text-[#121212] rounded-full px-8 py-4 font-jakarta font-semibold text-[16px] hover:scale-105 transition-transform shadow-lg shadow-black/20 flex items-center gap-2">
-                        Belanja Paket Spesial <i class="ph ph-arrow-right"></i>
-                    </a>
-                </div>
+            <div class="mt-12 flex justify-center sm:hidden">
+                <a href="{{ route('store.catalog') }}" class="border border-[#1a1a1a]/10 text-[#1a1a1a] font-jakarta font-semibold px-8 py-4 rounded-full hover:bg-[#1a1a1a]/5 transition-colors">
+                    Lihat Semua Produk <i class="ph ph-arrow-right"></i>
+                </a>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            gsap.registerPlugin(ScrollTrigger);
+    {{-- ══════════════════════════════════════
+         PROMO BANNER (HANGAT)
+    ══════════════════════════════════════ --}}
+    <section class="w-full max-w-[1400px] mx-auto px-6 md:px-12 py-20">
+        <div class="gsap-promo opacity-0 relative rounded-[2rem] overflow-hidden h-[340px] md:h-[420px] flex items-center bg-[#f5f0e8] group">
+            {{-- Background Image --}}
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Foods_%28cropped%29.jpg" alt="Promo" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 group-hover:scale-105 transition-all duration-1000">
 
-            // Cinematic Hero Text Reveal (Hanya Sekali di Awal)
-            gsap.fromTo(".gsap-hero-el", 
-                { y: 80, opacity: 0, rotateX: -30, transformOrigin: "bottom center" }, 
-                { y: 0, opacity: 1, rotateX: 0, duration: 1.5, stagger: 0.2, ease: "power4.out" }
-            );
+            {{-- Content --}}
+            <div class="relative z-10 px-10 md:px-16 max-w-2xl">
+                <span class="inline-block bg-orange-100 text-orange-700 text-[11px] font-jakarta font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-5">Promo Akhir Pekan</span>
+                <h2 class="text-4xl md:text-5xl font-display font-semibold text-[#1a1a1a] leading-tight mb-6">
+                    Semua Kebutuhan Masak<br>Ada Di Sini.
+                </h2>
+                <a href="{{ route('store.catalog') }}" class="bg-[#1a1a1a] text-white font-jakarta font-semibold px-8 py-4 rounded-full hover:scale-105 active:scale-95 transition-transform inline-flex items-center gap-2 shadow-lg shadow-black/15">
+                    Belanja Sekarang <i class="ph ph-arrow-right"></i>
+                </a>
+            </div>
 
-            // Hero Image Entry (Hanya Sekali di Awal)
-            gsap.fromTo(".gsap-hero-images",
-                { scale: 0.8, opacity: 0, y: 50, rotate: -5 },
-                { scale: 1, opacity: 1, y: 0, rotate: 0, duration: 2, ease: "power3.out", delay: 0.2 }
-            );
+            {{-- Decorative shape --}}
+            <div class="absolute right-0 top-0 bottom-0 w-[40%] hidden md:flex items-center justify-center">
+                <div class="w-[300px] h-[300px] rounded-full bg-orange-200/40 absolute"></div>
+                <div class="w-[220px] h-[220px] rounded-full bg-orange-300/30 absolute translate-x-6 translate-y-6"></div>
+                <i class="ph ph-chef-hat text-[160px] text-orange-300/50 relative z-10"></i>
+            </div>
+        </div>
+    </section>
 
-            // Features Stagger Reveal
-            gsap.fromTo(".gsap-feature-card",
-                { y: 50, opacity: 0 },
-                { 
-                    y: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: ".gsap-feature-card",
-                        start: "top 85%",
-                    }
-                }
-            );
+</main>
 
-            // How It Works Steps Reveal
-            gsap.fromTo(".gsap-step-card",
-                { y: 40, opacity: 0 },
-                { 
-                    y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: ".gsap-step-card",
-                        start: "top 85%",
-                    }
-                }
-            );
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        gsap.registerPlugin(ScrollTrigger);
 
-            // Category Horizontal Stagger Reveal (Hanya Sekali saat di-scroll)
-            gsap.fromTo(".gsap-category-card",
-                { x: -50, opacity: 0 },
-                { 
-                    x: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "back.out(1.7)",
-                    scrollTrigger: {
-                        trigger: ".gsap-category-card",
-                        start: "top 85%",
-                        // Secara default GSAP berjalan satu kali
-                    }
-                }
-            );
+        const smoothEase = "expo.out"; // Memberikan efek berbobot dan smooth
+        const heavyY = 80; // Jarak translate yang lebih jauh untuk efek mengayun
 
-            // Product Grid Upward Stagger Reveal (Hanya Sekali saat di-scroll)
-            gsap.utils.toArray(".gsap-product-card").forEach((card, i) => {
-                gsap.fromTo(card,
-                    { y: 100, opacity: 0, scale: 0.9 },
-                    {
-                        y: 0, opacity: 1, scale: 1, duration: 1.2, ease: "expo.out",
-                        scrollTrigger: {
-                            trigger: card,
-                            start: "top 85%",
-                            // Secara default GSAP berjalan satu kali
-                        }
-                    }
-                );
-            });
+        // Set awal untuk mencegah kedipan
+        gsap.set(["main section:first-child h1", "main section:first-child p", "main section:first-child .flex.flex-col.sm\\:flex-row", "main section:first-child .lg\\:w-\\[45\\%\\]", ".gsap-stat", ".gsap-cat-card", ".gsap-product-card", ".gsap-promo"], { willChange: "transform, opacity" });
 
-            // Promo Banner Reveal
-            gsap.fromTo(".gsap-promo-banner",
-                { scale: 0.95, opacity: 0, y: 50 },
-                { 
-                    scale: 1, opacity: 1, y: 0, duration: 1.5, ease: "expo.out",
-                    scrollTrigger: {
-                        trigger: ".gsap-promo-banner",
-                        start: "top 90%",
-                    }
-                }
-            );
-        });
-    </script>
+        // 1. Hero Section (Masuk secara bergiliran dengan smooth)
+        const tlHero = gsap.timeline({ defaults: { ease: smoothEase, force3D: true } });
+        tlHero.fromTo("main section:first-child h1", 
+            { y: heavyY, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 2 }
+        )
+        .fromTo("main section:first-child p", 
+            { y: 40, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1.8 }, "-=1.7"
+        )
+        .fromTo("main section:first-child .flex.flex-col.sm\\:flex-row", 
+            { y: 40, opacity: 0 }, 
+            { y: 0, opacity: 1, duration: 1.8 }, "-=1.6"
+        )
+        .fromTo("main section:first-child .lg\\:w-\\[45\\%\\]", 
+            { y: 60, scale: 0.92, opacity: 0 }, 
+            { y: 0, scale: 1, opacity: 1, duration: 2.2 }, "-=1.8"
+        );
+
+        // 2. Statistics Bar (Berbarengan beruntun)
+        gsap.fromTo(".gsap-stat", 
+            { y: 50, opacity: 0 }, 
+            { 
+                y: 0, opacity: 1, stagger: 0.1, duration: 1.5, ease: smoothEase, force3D: true,
+                scrollTrigger: { trigger: ".gsap-stat", start: "top 95%", once: true }
+            }
+        );
+
+        // 3. Category Grid (Lebih responsif, stagger cepat)
+        gsap.fromTo(".gsap-cat-card", 
+            { y: 60, opacity: 0 }, 
+            { 
+                y: 0, opacity: 1, stagger: 0.05, duration: 1.2, ease: smoothEase, force3D: true,
+                scrollTrigger: { trigger: ".gsap-cat-card", start: "top 95%", once: true }
+            }
+        );
+
+        // 4. Products Grid (Lebih responsif, stagger cepat)
+        gsap.fromTo(".gsap-product-card", 
+            { y: 60, opacity: 0 }, 
+            { 
+                y: 0, opacity: 1, stagger: 0.05, duration: 1.2, ease: smoothEase, force3D: true,
+                scrollTrigger: { trigger: ".gsap-product-card", start: "top 95%", once: true }
+            }
+        );
+
+        // 5. Promo Banner (Membesar sedikit saat masuk)
+        gsap.fromTo(".gsap-promo", 
+            { y: heavyY, scale: 0.95, opacity: 0 }, 
+            { 
+                y: 0, scale: 1, opacity: 1, duration: 2, ease: smoothEase, force3D: true,
+                scrollTrigger: { trigger: ".gsap-promo", start: "top 85%", once: true }
+            }
+        );
+    });
+</script>
 </x-storefront-layout>

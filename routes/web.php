@@ -60,17 +60,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Tambahan khusus untuk Railway (karena tidak ada terminal)
-Route::get('/setup-database', function () {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', [
-            '--seed' => true,
-            '--force' => true
-        ]);
-        return '<h1>Database berhasil di-setup! 🎉</h1><p>Silakan kembali ke halaman utama.</p>';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
-
 require __DIR__.'/auth.php';

@@ -11,6 +11,15 @@ Route::get('/', function () {
     return redirect()->route('store.index');
 });
 
+// FALLBACK IMAGE SERVER: Menyajikan gambar langsung jika symlink rusak di server
+Route::get('/storage/products/{filename}', function ($filename) {
+    $path = storage_path('app/public/products/' . $filename);
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+});
+
 // SECRET ROUTE UNTUK SETUP DATABASE DI RAILWAY
 Route::get('/deploy-setup', function () {
     try {

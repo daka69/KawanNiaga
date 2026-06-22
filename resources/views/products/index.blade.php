@@ -5,28 +5,34 @@
         </h2>
     </x-slot>
 
-    <div class="py-12" x-data="{ 
-        isModalOpen: {{ $errors->any() && !old('product_id') ? 'true' : 'false' }},
-        isEditModalOpen: {{ $errors->any() && old('product_id') ? 'true' : 'false' }},
-        editId: @json(old('product_id', '')),
-        editName: @json(old('name', '')),
-        editCategory: @json(old('category', '')),
-        editDesc: @json(old('description', '')),
-        editStock: @json(old('stock', '')),
-        editCap: @json(old('capital_price', '')),
-        editSell: @json(old('selling_price', '')),
-        
-        openEdit(product) {
-            this.editId = product.id;
-            this.editName = product.name;
-            this.editCategory = product.category || '';
-            this.editDesc = product.description || '';
-            this.editStock = product.stock;
-            this.editCap = product.capital_price;
-            this.editSell = product.selling_price;
-            this.isEditModalOpen = true;
-        }
-    }">
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('productCrud', () => ({
+                isModalOpen: {{ $errors->any() && !old('product_id') ? 'true' : 'false' }},
+                isEditModalOpen: {{ $errors->any() && old('product_id') ? 'true' : 'false' }},
+                editId: @json(old('product_id', '')),
+                editName: @json(old('name', '')),
+                editCategory: @json(old('category', '')),
+                editDesc: @json(old('description', '')),
+                editStock: @json(old('stock', '')),
+                editCap: @json(old('capital_price', '')),
+                editSell: @json(old('selling_price', '')),
+                
+                openEdit(product) {
+                    this.editId = product.id;
+                    this.editName = product.name;
+                    this.editCategory = product.category || '';
+                    this.editDesc = product.description || '';
+                    this.editStock = product.stock;
+                    this.editCap = product.capital_price;
+                    this.editSell = product.selling_price;
+                    this.isEditModalOpen = true;
+                }
+            }))
+        })
+    </script>
+
+    <div class="py-12" x-data="productCrud">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             @if(session('success'))
                 <div class="outer-shell mb-8 motion-fluid">

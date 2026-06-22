@@ -15,6 +15,11 @@ Route::get('/', function () {
 Route::get('/deploy-setup', function () {
     try {
         \Illuminate\Support\Facades\Artisan::call('storage:link');
+    } catch (\Exception $e) {
+        // Abaikan error symlink karena terkadang direktori sudah ada atau permission ditolak di Railway
+    }
+
+    try {
         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
         \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
         return "SUKSES! Database telah dimigrasi dan di-seed. Akun penjual: penjual@kawanniaga.test (password: password)";

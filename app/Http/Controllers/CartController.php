@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -111,9 +112,12 @@ class CartController extends Controller
             $subtotal += $details['price'] * $details['quantity'];
         }
 
-        $delivery = $request->input('delivery', 25000);
+        // Pastikan delivery fee tidak bisa dimanipulasi jadi minus
+        $delivery = max(0, (int) $request->input('delivery', 25000));
         $promoDiscount = session('promo_discount', 0);
-        $total = $subtotal + $delivery - $promoDiscount;
+        
+        // Pastikan total tidak bisa minus akibat diskon yang lebih besar dari subtotal
+        $total = max(0, $subtotal + $delivery - $promoDiscount);
 
         // Generate VA number sekali dan simpan di session
         $vaNumber = '8077 ' . rand(1000, 9999) . ' ' . rand(1000, 9999) . ' ' . rand(10, 99);
@@ -150,54 +154,63 @@ class CartController extends Controller
         $pendingPayment = session('pending_payment', []);
         $orderNumber = 'KN-' . strtoupper(substr(md5(time() . rand()), 0, 8));
 
-        // Buat Order di database
-        $order = Order::create([
-            'order_number' => $orderNumber,
-            'user_id' => auth()->id(),
-            'shipping_address' => auth()->user()->address ?? '-',
-            'payment_method' => $pendingPayment['method'] ?? 'va',
-            'subtotal' => $pendingPayment['subtotal'] ?? 0,
-            'delivery_fee' => $pendingPayment['delivery'] ?? 0,
-            'discount' => $pendingPayment['discount'] ?? 0,
-            'total' => $pendingPayment['total'] ?? 0,
-            'status' => 'paid',
-        ]);
+        DB::beginTransaction();
+        try {
+            // Buat Order di database
+            $order = Order::create([
+                'order_number' => $orderNumber,
+                'user_id' => auth()->id(),
+                'shipping_address' => auth()->user()->address ?? '-',
+                'payment_method' => $pendingPayment['method'] ?? 'va',
+                'subtotal' => $pendingPayment['subtotal'] ?? 0,
+                'delivery_fee' => $pendingPayment['delivery'] ?? 0,
+                'discount' => $pendingPayment['discount'] ?? 0,
+                'total' => $pendingPayment['total'] ?? 0,
+                'status' => 'paid',
+            ]);
 
-        foreach ($cart as $id => $details) {
-            $product = Product::find($id);
-            if (!$product) continue;
+            foreach ($cart as $id => $details) {
+                // Gunakan lockForUpdate() agar mencegah 2 pembeli membeli stok terakhir bersamaan (Race Condition)
+                $product = Product::lockForUpdate()->find($id);
+                if (!$product) continue;
 
-            $quantity = $details['quantity'];
+                $quantity = $details['quantity'];
 
-            // Cek ulang stok
-            if ($product->stock < $quantity) {
-                $order->delete();
-                return redirect()->route('cart.index')->with('error', 'Maaf, stok ' . $product->name . ' tidak mencukupi.');
+                // Cek ulang stok dengan ketat
+                if ($product->stock < $quantity) {
+                    DB::rollBack();
+                    return redirect()->route('cart.index')->with('error', 'Maaf, stok ' . $product->name . ' tidak mencukupi. Tersisa: ' . $product->stock);
+                }
+
+                $total_price = $product->selling_price * $quantity;
+                $total_profit = ($product->selling_price - $product->capital_price) * $quantity;
+
+                // Simpan ke sales (untuk laporan penjual)
+                Sale::create([
+                    'product_id' => $product->id,
+                    'user_id' => auth()->id(),
+                    'quantity' => $quantity,
+                    'total_price' => $total_price,
+                    'total_profit' => $total_profit,
+                ]);
+
+                // Simpan ke order_items (untuk riwayat pembeli)
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'product_name' => $product->name,
+                    'quantity' => $quantity,
+                    'price' => $product->selling_price,
+                    'subtotal' => $total_price,
+                ]);
+
+                $product->decrement('stock', $quantity);
             }
 
-            $total_price = $product->selling_price * $quantity;
-            $total_profit = ($product->selling_price - $product->capital_price) * $quantity;
-
-            // Simpan ke sales (untuk laporan penjual)
-            Sale::create([
-                'product_id' => $product->id,
-                'user_id' => auth()->id(),
-                'quantity' => $quantity,
-                'total_price' => $total_price,
-                'total_profit' => $total_profit,
-            ]);
-
-            // Simpan ke order_items (untuk riwayat pembeli)
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product->id,
-                'product_name' => $product->name,
-                'quantity' => $quantity,
-                'price' => $product->selling_price,
-                'subtotal' => $total_price,
-            ]);
-
-            $product->decrement('stock', $quantity);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('cart.index')->with('error', 'Terjadi kesalahan sistem saat memproses pesanan Anda. Silakan coba lagi.');
         }
 
         session()->forget('cart');

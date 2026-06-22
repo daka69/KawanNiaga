@@ -7,6 +7,7 @@ use App\Models\Product;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductExport;
 use App\Imports\ProductImport;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -60,6 +61,14 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            // Hapus gambar lama agar tidak menumpuk di server
+            if ($product->image) {
+                $oldPath = str_replace('/storage/', '', $product->image);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+
             $path = $request->file('image')->store('products', 'public');
             $validated['image'] = '/storage/' . $path;
         }
@@ -70,6 +79,14 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        // Hapus file fisik gambar jika ada
+        if ($product->image) {
+            $oldPath = str_replace('/storage/', '', $product->image);
+            if (Storage::disk('public')->exists($oldPath)) {
+                Storage::disk('public')->delete($oldPath);
+            }
+        }
+
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
     }

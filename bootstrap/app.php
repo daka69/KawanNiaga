@@ -21,6 +21,20 @@ $app = Application::configure(basePath: dirname(__DIR__))
 
 if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
     $app->useStoragePath('/tmp');
+    
+    // Pastikan folder-folder esensial Laravel ada di /tmp
+    $dirs = [
+        '/tmp/framework/views',
+        '/tmp/framework/cache/data',
+        '/tmp/framework/sessions',
+        '/tmp/logs',
+    ];
+    
+    foreach ($dirs as $dir) {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+    }
 }
 
 return $app;

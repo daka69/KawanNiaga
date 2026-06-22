@@ -60,4 +60,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Trik Sulap untuk menjalankan migrasi tanpa Terminal
+Route::get('/setup-database', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
+        return '<h1>Database berhasil di-setup! 🎉</h1><p>Silakan kembali ke halaman utama dan hapus /setup-database dari URL Anda.</p>';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
 require __DIR__.'/auth.php';

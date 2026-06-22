@@ -69,6 +69,8 @@ class CartController extends Controller
             session()->put('cart', $cart);
             return redirect()->back()->with('success', 'Keranjang diperbarui!');
         }
+
+        return redirect()->route('cart.index');
     }
 
     public function remove(Request $request)
@@ -81,6 +83,8 @@ class CartController extends Controller
             }
             return redirect()->back()->with('success', 'Produk dihapus dari keranjang.');
         }
+
+        return redirect()->route('cart.index');
     }
 
     public function checkout()
@@ -145,6 +149,11 @@ class CartController extends Controller
 
     public function confirmPayment()
     {
+        // Pencegahan Double-Submit (Poin 5)
+        if (!session()->has('pending_payment')) {
+            return redirect()->route('store.index')->with('error', 'Sesi pembayaran kadaluarsa atau pesanan sudah dibuat.');
+        }
+
         $cart = session()->get('cart');
         
         if (!$cart || count($cart) === 0) {
@@ -156,18 +165,9 @@ class CartController extends Controller
 
         DB::beginTransaction();
         try {
-            // Buat Order di database
-            $order = Order::create([
-                'order_number' => $orderNumber,
-                'user_id' => auth()->id(),
-                'shipping_address' => auth()->user()->address ?? '-',
-                'payment_method' => $pendingPayment['method'] ?? 'va',
-                'subtotal' => $pendingPayment['subtotal'] ?? 0,
-                'delivery_fee' => $pendingPayment['delivery'] ?? 0,
-                'discount' => $pendingPayment['discount'] ?? 0,
-                'total' => $pendingPayment['total'] ?? 0,
-                'status' => 'paid',
-            ]);
+            $realSubtotal = 0;
+            $orderItemsData = [];
+            $salesData = [];
 
             foreach ($cart as $id => $details) {
                 // Gunakan lockForUpdate() agar mencegah 2 pembeli membeli stok terakhir bersamaan (Race Condition)
@@ -182,29 +182,55 @@ class CartController extends Controller
                     return redirect()->route('cart.index')->with('error', 'Maaf, stok ' . $product->name . ' tidak mencukupi. Tersisa: ' . $product->stock);
                 }
 
+                // Kalkulasi harga AKURAT langsung dari Database (Poin 4)
                 $total_price = $product->selling_price * $quantity;
                 $total_profit = ($product->selling_price - $product->capital_price) * $quantity;
+                $realSubtotal += $total_price;
 
-                // Simpan ke sales (untuk laporan penjual)
-                Sale::create([
+                $salesData[] = [
                     'product_id' => $product->id,
                     'user_id' => auth()->id(),
                     'quantity' => $quantity,
                     'total_price' => $total_price,
                     'total_profit' => $total_profit,
-                ]);
+                ];
 
-                // Simpan ke order_items (untuk riwayat pembeli)
-                OrderItem::create([
-                    'order_id' => $order->id,
+                $orderItemsData[] = [
                     'product_id' => $product->id,
                     'product_name' => $product->name,
                     'quantity' => $quantity,
                     'price' => $product->selling_price,
                     'subtotal' => $total_price,
-                ]);
+                ];
 
                 $product->decrement('stock', $quantity);
+            }
+
+            $deliveryFee = $pendingPayment['delivery'] ?? 0;
+            $discount = $pendingPayment['discount'] ?? 0;
+            $realTotal = max(0, $realSubtotal + $deliveryFee - $discount);
+
+            // Buat Order di database dengan harga yang sudah dikalkulasi ulang
+            $order = Order::create([
+                'order_number' => $orderNumber,
+                'user_id' => auth()->id(),
+                'shipping_address' => auth()->user()->address ?? '-',
+                'payment_method' => $pendingPayment['method'] ?? 'va',
+                'subtotal' => $realSubtotal,
+                'delivery_fee' => $deliveryFee,
+                'discount' => $discount,
+                'total' => $realTotal,
+                'status' => 'paid', // Status hardcode untuk demo (Poin 14)
+            ]);
+
+            // Simpan items dan sales setelah Order berhasil dibuat
+            foreach ($orderItemsData as $item) {
+                $item['order_id'] = $order->id;
+                OrderItem::create($item);
+            }
+
+            foreach ($salesData as $sale) {
+                Sale::create($sale);
             }
 
             DB::commit();

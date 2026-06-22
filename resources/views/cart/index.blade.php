@@ -54,11 +54,11 @@
                                     <form action="{{ route('cart.update') }}" method="POST" class="flex items-center bg-[#fcfcfc] rounded-full border border-[#121212]/10 p-1" x-data="{ qty: {{ $details['quantity'] }} }">
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $id }}">
-                                        <button type="submit" @click="if(qty > 1) qty--" name="quantity" :value="qty - 1" class="w-8 h-8 rounded-full bg-white text-[#121212] flex items-center justify-center hover:bg-[#121212] hover:text-white transition-colors shadow-sm">
+                                        <button type="submit" name="quantity" :value="qty > 1 ? qty - 1 : 1" class="w-8 h-8 rounded-full bg-white text-[#121212] flex items-center justify-center hover:bg-[#121212] hover:text-white transition-colors shadow-sm">
                                             <i class="ph ph-minus text-sm"></i>
                                         </button>
                                         <span class="font-jakarta font-semibold text-[#121212] w-10 text-center" x-text="qty"></span>
-                                        <button type="submit" @click="qty++" name="quantity" :value="qty + 1" class="w-8 h-8 rounded-full bg-white text-[#121212] flex items-center justify-center hover:bg-[#121212] hover:text-white transition-colors shadow-sm">
+                                        <button type="submit" name="quantity" :value="qty + 1" class="w-8 h-8 rounded-full bg-white text-[#121212] flex items-center justify-center hover:bg-[#121212] hover:text-white transition-colors shadow-sm">
                                             <i class="ph ph-plus text-sm"></i>
                                         </button>
                                     </form>

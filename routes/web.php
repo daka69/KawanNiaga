@@ -18,7 +18,7 @@ Route::get('/store/catalog', [\App\Http\Controllers\StoreController::class, 'cat
 Route::get('/store/{product}', [\App\Http\Controllers\StoreController::class, 'show'])->name('store.show');
 Route::get('/about', [\App\Http\Controllers\StoreController::class, 'about'])->name('about');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('role:penjual');
 
     // Penjual Routes

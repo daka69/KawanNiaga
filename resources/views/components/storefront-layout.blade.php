@@ -102,7 +102,7 @@
                 </div>
             </nav>
             <div class="flex items-center gap-4">
-                @auth
+                @if(auth()->check() && auth()->user()->role === 'pembeli')
                     <a href="{{ route('cart.index') }}" class="relative p-2 text-[#121212] hover:bg-[#121212]/5 rounded-full transition-colors active:scale-95 duration-150 ease-in-out group">
                         <i class="ph ph-shopping-cart text-2xl group-hover:scale-110 transition-transform"></i>
                         @php $cartCount = session('cart') ? array_sum(array_column(session('cart'), 'quantity')) : 0; @endphp
@@ -110,11 +110,11 @@
                         <span class="absolute top-0 right-0 bg-[#121212] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">{{ $cartCount }}</span>
                         @endif
                     </a>
-                @else
+                @elseif(!auth()->check())
                     <a href="{{ route('login') }}" class="relative p-2 text-[#121212] hover:bg-[#121212]/5 rounded-full transition-colors active:scale-95 duration-150 ease-in-out group">
                         <i class="ph ph-shopping-cart text-2xl group-hover:scale-110 transition-transform"></i>
                     </a>
-                @endauth
+                @endif
                 
                 @auth
                     <x-dropdown align="right" width="48">

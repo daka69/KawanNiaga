@@ -11,6 +11,18 @@ Route::get('/', function () {
     return redirect()->route('store.index');
 });
 
+// TEMPORARY ROUTE: Debug Log Server 
+Route::get('/railway-logs', function () {
+    $path = storage_path('logs/laravel.log');
+    if (!file_exists($path)) {
+        return "TIDAK ADA FILE LOG.";
+    }
+    // Baca 100 baris terakhir dari log
+    $file = file($path);
+    $lines = array_slice($file, -100);
+    return "<pre style='background:#121212;color:#0f0;padding:20px;'>" . implode("", $lines) . "</pre>";
+});
+
 // FALLBACK IMAGE SERVER: Menyajikan gambar langsung jika symlink rusak di server
 Route::get('/storage/products/{filename}', function ($filename) {
     $path = storage_path('app/public/products/' . $filename);

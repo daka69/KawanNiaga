@@ -45,14 +45,14 @@
 
         <!-- Page Heading (With PT to clear fixed nav) -->
         @isset($header)
-            <header class="bg-transparent border-b border-[#121212]/5 relative z-20 pt-[120px] pb-6">
+            <header class="bg-transparent border-b border-[#121212]/5 relative z-20 pt-[140px] md:pt-[160px] pb-6">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
         @else
             <!-- Spacer if no header -->
-            <div class="pt-[120px]"></div>
+            <div class="pt-[140px] md:pt-[160px]"></div>
         @endisset
 
         <!-- Page Content -->

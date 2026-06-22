@@ -2,6 +2,6 @@
 cmds = []
 
 [start]
-preCmds = ["php artisan storage:link", "php artisan migrate --force", "php artisan optimize"]
+cmd = "php artisan storage:link && php artisan migrate --force && php artisan optimize && php-fpm -y /assets/php-fpm.conf & nginx -c /assets/nginx.conf"
 
 

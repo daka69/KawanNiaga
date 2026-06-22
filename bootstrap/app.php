@@ -32,7 +32,7 @@ if (isset($_ENV['VERCEL']) || getenv('VERCEL')) {
     
     foreach ($dirs as $dir) {
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            @mkdir($dir, 0755, true);
         }
     }
 }

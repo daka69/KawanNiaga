@@ -5,7 +5,28 @@
         </h2>
     </x-slot>
 
-    <div class="py-12" x-data="{ isModalOpen: {{ $errors->any() ? 'true' : 'false' }} }">
+    <div class="py-12" x-data="{ 
+        isModalOpen: {{ $errors->any() && !old('product_id') ? 'true' : 'false' }},
+        isEditModalOpen: {{ $errors->any() && old('product_id') ? 'true' : 'false' }},
+        editId: @json(old('product_id', '')),
+        editName: @json(old('name', '')),
+        editCategory: @json(old('category', '')),
+        editDesc: @json(old('description', '')),
+        editStock: @json(old('stock', '')),
+        editCap: @json(old('capital_price', '')),
+        editSell: @json(old('selling_price', '')),
+        
+        openEdit(product) {
+            this.editId = product.id;
+            this.editName = product.name;
+            this.editCategory = product.category || '';
+            this.editDesc = product.description || '';
+            this.editStock = product.stock;
+            this.editCap = product.capital_price;
+            this.editSell = product.selling_price;
+            this.isEditModalOpen = true;
+        }
+    }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             @if(session('success'))
                 <div class="outer-shell mb-8 motion-fluid">
@@ -85,7 +106,7 @@
                                     <td class="p-6 text-right font-semibold text-sm text-[#121212]/60">{{ number_format($p->capital_price, 0, ',', '.') }}</td>
                                     <td class="p-6 text-right font-bold text-[#121212]">{{ number_format($p->selling_price, 0, ',', '.') }}</td>
                                     <td class="p-6 flex justify-center gap-2">
-                                        <a href="{{ route('products.edit', $p->id) }}" class="text-[#121212]/60 hover:text-[#121212] bg-[#121212]/5 hover:bg-[#121212]/10 rounded-full w-8 h-8 flex items-center justify-center transition-colors"><i class="ph ph-pencil-simple text-lg"></i></a>
+                                        <button @click="openEdit({{ htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') }})" class="text-[#121212]/60 hover:text-[#121212] bg-[#121212]/5 hover:bg-[#121212]/10 rounded-full w-8 h-8 flex items-center justify-center transition-colors"><i class="ph ph-pencil-simple text-lg"></i></button>
                                         <form action="{{ route('products.destroy', $p->id) }}" method="POST" onsubmit="return confirm('Hapus SKU ini secara permanen?')">
                                             @csrf
                                             @method('DELETE')
@@ -151,6 +172,65 @@
                             <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8 pt-6 border-t border-[#121212]/5">
                                 <button type="button" @click="isModalOpen = false" class="px-6 py-2.5 rounded-full bg-[#121212]/5 border border-[#121212]/10 text-[#121212] hover:bg-[#121212]/10 font-semibold font-jakarta transition-colors w-full sm:w-auto">Batal</button>
                                 <button type="submit" class="bg-[#121212] hover:bg-black text-white px-8 py-2.5 rounded-full font-semibold font-jakarta transition-colors shadow-sm w-full sm:w-auto">Simpan SKU</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit -->
+        <div x-show="isEditModalOpen" style="display: none;" class="fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Background overlay -->
+                <div x-show="isEditModalOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-[#121212]/40 backdrop-blur-md transition-opacity" @click="isEditModalOpen = false" aria-hidden="true"></div>
+
+                <!-- This element is to trick the browser into centering the modal contents. -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <!-- Modal Panel -->
+                <div x-show="isEditModalOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom outer-shell w-full max-w-xl shadow-ambient text-left overflow-hidden transform transition-all sm:my-8 sm:align-middle relative z-10">
+                    <div class="inner-core bg-white p-8 sm:p-10 flex flex-col relative max-h-[85vh] overflow-y-auto scrollbar-hide">
+                        <button type="button" @click="isEditModalOpen = false" class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-[#121212]/5 hover:bg-[#121212]/10 text-[#121212] transition-colors z-20"><i class="ph ph-x text-lg"></i></button>
+                        
+                        <h2 class="text-2xl font-semibold text-[#121212] mb-6 border-b border-[#121212]/5 pb-4 font-display tracking-tight-display pr-10">Edit SKU</h2>
+                        <form :action="'/products/' + editId" method="POST" enctype="multipart/form-data" class="space-y-5">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="product_id" :value="editId">
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Nama Produk</label>
+                                <input type="text" name="name" x-model="editName" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Kategori</label>
+                                <input type="text" name="category" x-model="editCategory" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Deskripsi Produk</label>
+                                <textarea name="description" rows="3" x-model="editDesc" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Gambar Produk (Opsional)</label>
+                                <input type="file" name="image" accept="image/*" class="w-full text-[#121212]/70 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#121212]/5 file:text-[#121212] hover:file:bg-[#121212] hover:file:text-white font-jakarta cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Stok Awal (SOH)</label>
+                                <input type="number" name="stock" x-model="editStock" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Harga Modal</label>
+                                    <input type="number" name="capital_price" x-model="editCap" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-[#121212]/70 mb-2 font-jakarta">Harga Jual</label>
+                                    <input type="number" name="selling_price" x-model="editSell" class="w-full rounded-xl bg-[#fcfcfc] border-[#121212]/10 text-[#121212] focus:border-[#121212] focus:ring focus:ring-[#121212]/10 font-jakarta px-4 py-3" required>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8 pt-6 border-t border-[#121212]/5">
+                                <button type="button" @click="isEditModalOpen = false" class="px-6 py-2.5 rounded-full bg-[#121212]/5 border border-[#121212]/10 text-[#121212] hover:bg-[#121212]/10 font-semibold font-jakarta transition-colors w-full sm:w-auto">Batal</button>
+                                <button type="submit" class="bg-[#121212] hover:bg-black text-white px-8 py-2.5 rounded-full font-semibold font-jakarta transition-colors shadow-sm w-full sm:w-auto">Perbarui SKU</button>
                             </div>
                         </form>
                     </div>

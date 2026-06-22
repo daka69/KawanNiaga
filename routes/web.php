@@ -11,6 +11,18 @@ Route::get('/', function () {
     return redirect()->route('store.index');
 });
 
+// SECRET ROUTE UNTUK SETUP DATABASE DI RAILWAY
+Route::get('/deploy-setup', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        return "SUKSES! Database telah dimigrasi dan di-seed. Akun penjual: penjual@kawanniaga.test (password: password)";
+    } catch (\Exception $e) {
+        return "ERROR: " . $e->getMessage();
+    }
+});
+
 // Katalog Publik
 Route::get('/store', [\App\Http\Controllers\StoreController::class, 'index'])->name('store.index');
 Route::get('/store/catalog', [\App\Http\Controllers\StoreController::class, 'catalog'])->name('store.catalog');

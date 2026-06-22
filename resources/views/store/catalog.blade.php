@@ -34,11 +34,11 @@
                         </div>
                         <!-- Navigation Links -->
                         <nav class="flex flex-col gap-2">
-                            <a class="gsap-category-card opacity-0 {{ !request('category') ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5' }} rounded-xl px-4 py-3 flex items-center gap-3 font-jakarta font-medium transition-colors" href="{{ route('store.index', array_merge(request()->except('category', 'page'))) }}">
+                            <a class="gsap-category-card opacity-0 {{ !request('category') ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5' }} rounded-xl px-4 py-3 flex items-center gap-3 font-jakarta font-medium transition-colors" href="{{ route('store.catalog', array_merge(request()->except('category', 'page'))) }}">
                                 <i class="ph ph-squares-four text-lg"></i> Semua Produk
                             </a>
                             @foreach($categories as $cat)
-                            <a class="gsap-category-card opacity-0 {{ request('category') == $cat ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5' }} rounded-xl px-4 py-3 flex items-center gap-3 font-jakarta font-medium transition-colors" href="{{ route('store.index', array_merge(request()->except('page'), ['category' => $cat])) }}">
+                            <a class="gsap-category-card opacity-0 {{ request('category') == $cat ? 'bg-[#121212] text-white' : 'text-[#121212]/60 hover:bg-[#121212]/5' }} rounded-xl px-4 py-3 flex items-center gap-3 font-jakarta font-medium transition-colors" href="{{ route('store.catalog', array_merge(request()->except('page'), ['category' => $cat])) }}">
                                 <i class="ph ph-tag text-lg"></i> {{ $cat }}
                             </a>
                             @endforeach
@@ -51,9 +51,9 @@
             <div class="flex-grow w-full">
                 <!-- Category Tabs Mobile -->
                 <div class="lg:hidden flex overflow-x-auto pb-6 mb-2 gap-3 scrollbar-hide">
-                    <a href="{{ route('store.index', request()->except('category', 'page')) }}" class="whitespace-nowrap px-6 py-2.5 {{ !request('category') ? 'bg-[#121212] text-white' : 'bg-transparent text-[#121212]/60 border border-[#121212]/10 hover:bg-[#121212]/5' }} rounded-full font-jakarta font-medium transition-colors">Semua</a>
+                    <a href="{{ route('store.catalog', request()->except('category', 'page')) }}" class="whitespace-nowrap px-6 py-2.5 {{ !request('category') ? 'bg-[#121212] text-white' : 'bg-transparent text-[#121212]/60 border border-[#121212]/10 hover:bg-[#121212]/5' }} rounded-full font-jakarta font-medium transition-colors">Semua</a>
                     @foreach($categories as $cat)
-                    <a href="{{ route('store.index', array_merge(request()->except('page'), ['category' => $cat])) }}" class="whitespace-nowrap px-6 py-2.5 {{ request('category') == $cat ? 'bg-[#121212] text-white' : 'bg-transparent text-[#121212]/60 border border-[#121212]/10 hover:bg-[#121212]/5' }} rounded-full font-jakarta font-medium transition-colors">{{ $cat }}</a>
+                    <a href="{{ route('store.catalog', array_merge(request()->except('page'), ['category' => $cat])) }}" class="whitespace-nowrap px-6 py-2.5 {{ request('category') == $cat ? 'bg-[#121212] text-white' : 'bg-transparent text-[#121212]/60 border border-[#121212]/10 hover:bg-[#121212]/5' }} rounded-full font-jakarta font-medium transition-colors">{{ $cat }}</a>
                     @endforeach
                 </div>
 

@@ -116,7 +116,7 @@
                 
                 @if($products->hasPages())
                 <div class="mt-16 flex justify-center">
-                    {{ $products->appends(request()->query())->links('vendor.pagination.tailwind') }}
+                    {{ $products->appends(request()->query())->links() }}
                 </div>
                 @endif
             </div>

@@ -28,11 +28,11 @@ Aplikasi web untuk memudahkan pelaku usaha dan komunitas dalam menjalin kemitraa
 ---
 
 ## Fitur Utama
-- Sistem Otentikasi Multi-Role: Registrasi dan login terpisah untuk Admin, Penyedia Layanan, dan Pembeli/Klien.
-- Manajemen Data Bisnis (CRUD): Penyedia dapat menambah, melihat, mengubah, dan menghapus data layanan/produk mereka.
-- Pencarian Mitra Efisien: Pembeli dapat menjelajahi daftar mitra bisnis lengkap dengan detail layanan, rating, dan integrasi kontak langsung.
-- Panel Kendali Admin: Manajemen penuh terhadap data seluruh pengguna dan data bisnis yang terdaftar dalam sistem.
-- Sistem Rating & Ulasan: Penilaian dan feedback untuk membangun kepercayaan dalam ekosistem perdagangan.
+- **Sistem Otentikasi Multi-Role:** Registrasi dan login terpisah untuk Admin, Penyedia Layanan, dan Pembeli/Klien.
+- **Manajemen Data Bisnis (CRUD):** Penyedia dapat menambah, melihat, mengubah, dan menghapus data layanan/produk mereka.
+- **Pencarian Mitra Efisien:** Pembeli dapat menjelajahi daftar mitra bisnis lengkap dengan detail layanan, rating, dan integrasi kontak langsung.
+- **Panel Kendali Admin:** Manajemen penuh terhadap data seluruh pengguna dan data bisnis yang terdaftar dalam sistem.
+- **Sistem Rating & Ulasan:** Penilaian dan feedback untuk membangun kepercayaan dalam ekosistem perdagangan.
 
 ---
 

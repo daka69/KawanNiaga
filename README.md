@@ -12,8 +12,6 @@ Aplikasi web untuk memudahkan pelaku usaha dan komunitas dalam menjalin kemitraa
 | Ahmad Luthfi Maulana             | Frontend     | @anomaliemas  |
 | Amandha Citra Mustika            | Database     | @zvyaa        |
 
-*Catatan: Sesuaikan dengan informasi tim pengembang Anda*
-
 ---
 
 ## Tech Stack

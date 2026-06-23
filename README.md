@@ -32,7 +32,6 @@ Aplikasi web untuk memudahkan pelaku usaha dan komunitas dalam menjalin kemitraa
 - **Manajemen Data Bisnis (CRUD):** Penyedia dapat menambah, melihat, mengubah, dan menghapus data layanan/produk mereka.
 - **Pencarian Mitra Efisien:** Pembeli dapat menjelajahi daftar mitra bisnis lengkap dengan detail layanan, rating, dan integrasi kontak langsung.
 - **Panel Kendali Admin:** Manajemen penuh terhadap data seluruh pengguna dan data bisnis yang terdaftar dalam sistem.
-- **Sistem Rating & Ulasan:** Penilaian dan feedback untuk membangun kepercayaan dalam ekosistem perdagangan.
 
 ---
 
@@ -147,16 +146,6 @@ Untuk mempermudah proses pengujian dan demo aplikasi, sistem telah menyediakan a
 | `rating`                    | DECIMAL     | Rating rata-rata dari ulasan               |
 | `created_at` / `updated_at` | TIMESTAMP   | Timestamp otomatis Laravel                 |
 
-### Tabel `ulasan` (optional)
-| Kolom                       | Tipe        | Keterangan                                  |
-| --------------------------- | ----------- | ------------------------------------------- |
-| `id`                        | BIGINT (PK) | Primary key auto-increment                  |
-| `layanan_id`                | BIGINT (FK) | Relasi ke `layanan.id` (cascade delete)     |
-| `user_id`                   | BIGINT (FK) | Relasi ke `users.id` yang memberikan ulasan |
-| `rating`                    | INTEGER     | Rating 1-5 bintang                          |
-| `komentar`                  | TEXT        | Komentar ulasan                             |
-| `created_at` / `updated_at` | TIMESTAMP   | Timestamp otomatis Laravel                  |
-
 ---
 
 ## Hak Akses Pengguna
@@ -177,7 +166,6 @@ Untuk mempermudah proses pengujian dan demo aplikasi, sistem telah menyediakan a
 - Menjelajahi beranda utama platform yang menampilkan seluruh daftar mitra bisnis.
 - Mengakses halaman detail layanan untuk melihat informasi harga, deskripsi, lokasi, rating, serta gambar.
 - Menghubungi penyedia layanan secara langsung melalui tautan telepon/WhatsApp.
-- Memberikan rating dan ulasan untuk layanan yang telah digunakan.
 
 ---
 

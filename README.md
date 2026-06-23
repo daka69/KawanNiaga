@@ -112,7 +112,7 @@ Untuk mempermudah proses pengujian dan demo aplikasi, sistem telah menyediakan a
 
 | Role Pengguna | Email Login | Password | Hak Akses Utama |
 | :--- | :--- | :--- | :--- |
-| **👨‍💼 Admin** | `admin@kawanniaga.com` | `password` | Manajemen penuh produk, pesanan, penjualan, dan kode promo. |
+| **👨‍💼 Penjual** | `penjual@kawanniaga.com` | `password` | Manajemen penuh produk, pesanan, penjualan, dan kode promo. |
 | **🛍️ Pembeli** | `pembeli@kawanniaga.com` | `password` | Menjelajahi katalog produk dan melakukan pemesanan. |
 
 *(Catatan: Anda tetap dapat mendaftarkan akun baru secara organik melalui form halaman Register bawaan aplikasi)*

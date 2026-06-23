@@ -46,5 +46,22 @@ class DatabaseSeeder extends Seeder
             'capital_price' => 25000,
             'selling_price' => 35000,
         ]);
+
+        // Create Promo Codes
+        \App\Models\PromoCode::create([
+            'code' => 'DOSENBAIK',
+            'discount_amount' => 15000,
+            'min_purchase' => 30000,
+            'valid_until' => now()->addDays(30),
+            'is_active' => true,
+        ]);
+
+        \App\Models\PromoCode::create([
+            'code' => 'NILAIA',
+            'discount_amount' => 50000,
+            'min_purchase' => 100000,
+            'valid_until' => now()->addDays(30),
+            'is_active' => true,
+        ]);
     }
 }

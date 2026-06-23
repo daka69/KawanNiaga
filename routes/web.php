@@ -34,6 +34,25 @@ Route::get('/fix-password', function () {
     return "Akun penjual tidak ditemukan.";
 });
 
+// TEMPORARY ROUTE: Menambahkan Kode Promo untuk Presentasi
+Route::get('/seed-promo', function () {
+    \App\Models\PromoCode::firstOrCreate(['code' => 'DOSENBAIK'], [
+        'discount_amount' => 15000,
+        'min_purchase' => 30000,
+        'valid_until' => now()->addDays(30),
+        'is_active' => true,
+    ]);
+
+    \App\Models\PromoCode::firstOrCreate(['code' => 'NILAIA'], [
+        'discount_amount' => 50000,
+        'min_purchase' => 100000,
+        'valid_until' => now()->addDays(30),
+        'is_active' => true,
+    ]);
+
+    return "SUKSES! Kode Promo DOSENBAIK (Potongan 15rb) dan NILAIA (Potongan 50rb) sudah ditambahkan ke database. Siap digunakan untuk presentasi!";
+});
+
 // FALLBACK IMAGE SERVER: Menyajikan gambar langsung jika symlink rusak di server
 Route::get('/storage/products/{filename}', function ($filename) {
     $path = storage_path('app/public/products/' . $filename);

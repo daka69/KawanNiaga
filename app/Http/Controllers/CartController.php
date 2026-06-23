@@ -209,10 +209,10 @@ class CartController extends Controller
                 'user_id' => auth()->id(),
                 'shipping_address' => auth()->user()->address ?? '-',
                 'payment_method' => $pendingPayment['method'] ?? 'va',
-                'subtotal' => $realSubtotal,
-                'delivery_fee' => $deliveryFee,
-                'discount' => $discount,
-                'total' => $realTotal,
+                'subtotal' => (int) $realSubtotal,
+                'delivery_fee' => (int) $deliveryFee,
+                'discount' => (int) $discount,
+                'total' => (int) $realTotal,
                 'status' => 'paid', // Status hardcode untuk demo (Poin 14)
             ]);
 
@@ -225,7 +225,7 @@ class CartController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('cart.index')->with('error', 'SYSTEM ERROR: ' . $e->getMessage() . ' di baris ' . $e->getLine());
+            return redirect()->route('cart.index')->with('error', 'Terjadi kesalahan sistem saat memproses pesanan Anda. Silakan coba lagi.');
         }
 
         session()->forget('cart');

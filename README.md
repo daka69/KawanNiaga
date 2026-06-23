@@ -99,7 +99,7 @@ Pastikan perangkat Anda sudah terinstall komponen berikut:
     ```bash
     php artisan serve
     ```
-    Aplikasi dapat diakses melalui browser di alamat: **http://127.0.0.1:8000**
+    Aplikasi dapat diakses melalui browser di alamat: **(https://profound-surprise-production-d828.up.railway.app/store)**
 
 ---
 

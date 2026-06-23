@@ -225,7 +225,7 @@ class CartController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('cart.index')->with('error', 'Terjadi kesalahan sistem saat memproses pesanan Anda. Silakan coba lagi.');
+            return redirect()->route('cart.index')->with('error', 'SYSTEM ERROR: ' . $e->getMessage() . ' di baris ' . $e->getLine());
         }
 
         session()->forget('cart');

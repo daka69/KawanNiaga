@@ -1,6 +1,6 @@
-# KawanNiaga : Platform Perdagangan & Manajemen Kemitraan
+# KawanNiaga : Platform E-Commerce & Manajemen Penjualan
 
-Aplikasi web untuk memudahkan pelaku usaha dan komunitas dalam menjalin kemitraan bisnis serta mengelola transaksi perdagangan secara digital dan terintegrasi.
+Aplikasi web untuk memudahkan penjual dan pembeli dalam melakukan transaksi jual-beli produk secara digital dan terintegrasi. Dilengkapi dengan fitur manajemen inventori, tracking pesanan, dan sistem promosi untuk pengalaman berbelanja yang lebih baik.
 
 ---
 
@@ -28,10 +28,12 @@ Aplikasi web untuk memudahkan pelaku usaha dan komunitas dalam menjalin kemitraa
 ---
 
 ## Fitur Utama
-- **Sistem Otentikasi Multi-Role:** Registrasi dan login terpisah untuk Admin, Penyedia Layanan, dan Pembeli/Klien.
-- **Manajemen Data Bisnis (CRUD):** Penyedia dapat menambah, melihat, mengubah, dan menghapus data layanan/produk mereka.
-- **Pencarian Mitra Efisien:** Pembeli dapat menjelajahi daftar mitra bisnis lengkap dengan detail layanan, rating, dan integrasi kontak langsung.
-- **Panel Kendali Admin:** Manajemen penuh terhadap data seluruh pengguna dan data bisnis yang terdaftar dalam sistem.
+- **Sistem Otentikasi:** Registrasi dan login untuk pengguna dengan role pembeli.
+- **Manajemen Produk (CRUD):** Admin dapat menambah, melihat, mengubah, dan menghapus data produk dengan kategori dan harga.
+- **Tracking Inventori:** Sistem manajemen stok produk dengan perhitungan margin keuntungan otomatis.
+- **Sistem Pesanan:** Pembeli dapat melakukan pemesanan dengan tracking status pesanan secara real-time.
+- **Manajemen Penjualan:** Admin dapat memantau dan mengelola semua transaksi penjualan yang terjadi.
+- **Kode Promo:** Sistem diskon dengan kode promo yang dapat dikonfigurasi oleh admin.
 
 ---
 
@@ -98,53 +100,100 @@ Pastikan perangkat Anda sudah terinstall komponen berikut:
     ```bash
     php artisan serve
     ```
-    Aplikasi dapat diakses melalui browser di alamat: **(https://profound-surprise-production-d828.up.railway.app/store)**
+    Aplikasi dapat diakses melalui browser di alamat: **http://127.0.0.1:8000**
+    
+    Atau akses versi production di: **https://profound-surprise-production-d828.up.railway.app/store**
 
 ---
 
 ## Akun Default & Hak Akses (Testing Ready)
 
-Untuk mempermudah proses pengujian dan demo aplikasi, sistem telah menyediakan akun default dengan role yang berbeda melalui mekanisme database seeder. Semua akun menggunakan password seragam: **`password`**.
+Untuk mempermudah proses pengujian dan demo aplikasi, sistem telah menyediakan akun default melalui mekanisme database seeder. Password default: **`password`**.
 
-| Role Pengguna         | Email Login                | Password   | Hak Akses Utama                                                        | 
-| --------------------- | -------------------------- | ---------- | ---------------------------------------------------------------------- |
-| 👨‍💼 Admin             | `admin@kawanniaga.com`     | `password` | Manajemen penuh seluruh data pengguna dan data bisnis di platform.     |
-| 🏢 Penyedia Layanan  | `penyedia@kawanniaga.com`  | `password` | Manajemen (CRUD) layanan/produk pribadi, rating, dan integrasi kontak. |
-| 🛍️ Pembeli/Klien     | `pembeli@kawanniaga.com`   | `password` | Menjelajahi katalog mitra bisnis dan mengakses fitur hubungi penyedia. |
+| Role Pengguna | Email Login | Password | Hak Akses Utama |
+| :--- | :--- | :--- | :--- |
+| **👨‍💼 Admin** | `admin@kawanniaga.com` | `password` | Manajemen penuh produk, pesanan, penjualan, dan kode promo. |
+| **🛍️ Pembeli** | `pembeli@kawanniaga.com` | `password` | Menjelajahi katalog produk dan melakukan pemesanan. |
 
-*(Catatan: tetap dapat mendaftarkan akun baru secara organik melalui form halaman Register bawaan aplikasi)*
+*(Catatan: Anda tetap dapat mendaftarkan akun baru secara organik melalui form halaman Register bawaan aplikasi)*
 
 ---
 
 ## Struktur Database
 
 ### Tabel `users`
-| Kolom                       | Tipe             | Keterangan                                                     |
-| --------------------------- | ---------------- | -------------------------------------------------------------- |
-| `id`                        | BIGINT (PK)      | Primary key auto-increment                                     |
-| `name`                      | VARCHAR          | Nama lengkap pengguna                                          |
-| `email`                     | VARCHAR (unique) | Email login                                                    |
-| `email_verified_at`         | TIMESTAMP        | Waktu verifikasi email                                         |
-| `password`                  | VARCHAR          | Password terenkripsi                                           |
-| `role`                      | VARCHAR          | Hak akses: `admin`, `penyedia`, `pembeli` (default: `pembeli`) |
-| `no_telepon`                | VARCHAR          | Nomor telepon/WhatsApp aktif penyedia                          |
-| `remember_token`            | VARCHAR          | Token sesi "ingat saya"                                        |
-| `created_at` / `updated_at` | TIMESTAMP        | Timestamp otomatis Laravel                                     |
+| Kolom | Tipe | Keterangan |
+| --- | --- | --- |
+| `id` | BIGINT (PK) | Primary key auto-increment |
+| `name` | VARCHAR | Nama lengkap pengguna |
+| `email` | VARCHAR (unique) | Email login |
+| `email_verified_at` | TIMESTAMP | Waktu verifikasi email |
+| `password` | VARCHAR | Password terenkripsi |
+| `address` | VARCHAR | Alamat pengguna (optional) |
+| `phone` | VARCHAR | Nomor telepon pengguna (optional) |
+| `remember_token` | VARCHAR | Token sesi "ingat saya" |
+| `created_at` / `updated_at` | TIMESTAMP | Timestamp otomatis Laravel |
 
-### Tabel `layanan` (atau `produk`)
-| Kolom                       | Tipe        | Keterangan                                 |
-| --------------------------- | ----------- | ------------------------------------------ |
-| `id`                        | BIGINT (PK) | Primary key auto-increment                 |
-| `user_id`                   | BIGINT (FK) | Relasi ke `users.id` (cascade delete)      |
-| `nama`                      | VARCHAR     | Nama layanan/produk                        |
-| `kategori`                  | VARCHAR     | Kategori bisnis                            |
-| `deskripsi`                 | TEXT        | Deskripsi detail layanan/produk            |
-| `harga`                     | INTEGER     | Harga layanan (Rupiah)                     |
-| `lokasi`                    | VARCHAR     | Lokasi/wilayah operasional                 |
-| `status`                    | VARCHAR     | Status ketersediaan (default: `aktif`)     |
-| `gambar`                    | VARCHAR     | Path file gambar produk/layanan (nullable) |
-| `rating`                    | DECIMAL     | Rating rata-rata dari ulasan               |
-| `created_at` / `updated_at` | TIMESTAMP   | Timestamp otomatis Laravel                 |
+### Tabel `products`
+| Kolom | Tipe | Keterangan |
+| --- | --- | --- |
+| `id` | BIGINT (PK) | Primary key auto-increment |
+| `name` | VARCHAR | Nama produk |
+| `category` | VARCHAR | Kategori produk (nullable) |
+| `stock` | INTEGER | Jumlah stok tersedia (default: 0) |
+| `capital_price` | INTEGER | Harga modal (Rupiah) |
+| `selling_price` | INTEGER | Harga jual (Rupiah) |
+| `profit_margin` | INTEGER | Margin keuntungan (calculated field) |
+| `created_at` / `updated_at` | TIMESTAMP | Timestamp otomatis Laravel |
+
+### Tabel `orders`
+| Kolom | Tipe | Keterangan |
+| --- | --- | --- |
+| `id` | BIGINT (PK) | Primary key auto-increment |
+| `order_number` | VARCHAR (unique) | Nomor referensi pesanan |
+| `user_id` | BIGINT (FK) | Relasi ke `users.id` (cascade delete) |
+| `shipping_address` | TEXT | Alamat pengiriman |
+| `payment_method` | VARCHAR | Metode pembayaran |
+| `subtotal` | INTEGER | Total harga produk sebelum diskon |
+| `delivery_fee` | INTEGER | Biaya pengiriman (default: 0) |
+| `discount` | INTEGER | Potongan diskon (default: 0) |
+| `total` | INTEGER | Total akhir pembayaran |
+| `status` | ENUM | Status pesanan: `pending`, `paid`, `processing`, `shipped`, `completed`, `cancelled` (default: `paid`) |
+| `created_at` / `updated_at` | TIMESTAMP | Timestamp otomatis Laravel |
+
+### Tabel `order_items`
+| Kolom | Tipe | Keterangan |
+| --- | --- | --- |
+| `id` | BIGINT (PK) | Primary key auto-increment |
+| `order_id` | BIGINT (FK) | Relasi ke `orders.id` (cascade delete) |
+| `product_id` | BIGINT (FK) | Relasi ke `products.id` (set null on delete) |
+| `product_name` | VARCHAR | Nama produk saat pemesanan |
+| `quantity` | INTEGER | Jumlah item yang dipesan |
+| `price` | INTEGER | Harga per unit saat pemesanan |
+| `subtotal` | INTEGER | Total untuk item ini (quantity × price) |
+| `created_at` / `updated_at` | TIMESTAMP | Timestamp otomatis Laravel |
+
+### Tabel `sales`
+| Kolom | Tipe | Keterangan |
+| --- | --- | --- |
+| `id` | BIGINT (PK) | Primary key auto-increment |
+| `product_id` | BIGINT (FK) | Relasi ke `products.id` (set null on delete) |
+| `user_id` | BIGINT (FK) | Relasi ke `users.id` (cascade delete) |
+| `quantity` | INTEGER | Jumlah produk terjual |
+| `total_price` | INTEGER | Total harga penjualan |
+| `total_profit` | INTEGER | Total keuntungan dari penjualan |
+| `created_at` / `updated_at` | TIMESTAMP | Timestamp otomatis Laravel |
+
+### Tabel `promo_codes`
+| Kolom | Tipe | Keterangan |
+| --- | --- | --- |
+| `id` | BIGINT (PK) | Primary key auto-increment |
+| `code` | VARCHAR (unique) | Kode promo unik |
+| `discount_amount` | DECIMAL | Nilai diskon (Rp) |
+| `min_purchase` | DECIMAL | Minimum pembelian untuk aktivasi (default: 0) |
+| `valid_until` | DATETIME | Tanggal berlaku hingga (nullable) |
+| `is_active` | BOOLEAN | Status aktif kode promo (default: true) |
+| `created_at` / `updated_at` | TIMESTAMP | Timestamp otomatis Laravel |
 
 ---
 
@@ -152,28 +201,24 @@ Untuk mempermudah proses pengujian dan demo aplikasi, sistem telah menyediakan a
 
 ### 👨‍💼 Admin
 - Memantau ringkasan statistik total data pada halaman utama Dashboard Admin.
-- Melihat, melacak, dan mengelola seluruh data pengguna sistem.
-- Memantau dan mengelola seluruh data layanan/produk yang dipublikasikan di platform.
-- Mengelola kategori dan verifikasi bisnis.
+- Melihat, melacak, dan mengelola seluruh data produk dengan CRUD lengkap.
+- Memantau dan mengelola seluruh pesanan pelanggan serta tracking status.
+- Mengelola data penjualan dan analisis keuntungan per produk.
+- Membuat dan mengonfigurasi kode promo untuk campaign penjualan.
 
-### 🏢 Penyedia Layanan
-- Mengakses panel Dashboard khusus Penyedia Layanan.
-- Melakukan manajemen penuh (Create, Read, Update, Delete) pada layanan/produk pribadi miliknya.
-- Menyantumkan nomor telepon/WhatsApp untuk memudahkan komunikasi dengan calon klien.
-- Melihat rating dan ulasan dari pembeli/klien.
-
-### 🛍️ Pembeli/Klien
-- Menjelajahi beranda utama platform yang menampilkan seluruh daftar mitra bisnis.
-- Mengakses halaman detail layanan untuk melihat informasi harga, deskripsi, lokasi, rating, serta gambar.
-- Menghubungi penyedia layanan secara langsung melalui tautan telepon/WhatsApp.
+### 🛍️ Pembeli
+- Menjelajahi beranda utama platform yang menampilkan seluruh daftar produk.
+- Mengakses halaman detail produk untuk melihat informasi harga, kategori, dan stok.
+- Melakukan pemesanan dengan metode pembayaran yang tersedia.
+- Melacak status pesanan dari pending hingga pengiriman.
+- Menggunakan kode promo untuk mendapatkan diskon pada pembelian.
 
 ---
 
 ## Lisensi
 
-Proyek aplikasi web ini dikembangkan untuk keperluan bisnis dan perdagangan digital.
+Proyek aplikasi web ini dikembangkan untuk keperluan e-commerce dan manajemen penjualan digital.
 
 ---
-
 
 **Dibuat dengan ❤️ oleh Tim KawanNiaga**

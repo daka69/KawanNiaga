@@ -19,7 +19,7 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" x-data="{ deliveryCost: 25000, discount: {{ session('promo_discount', 0) }} }">
             <!-- Left Column: Forms -->
             <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-8">
                 <!-- Shipping Address -->
@@ -62,7 +62,7 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
                                 <label class="cursor-pointer relative group">
-                                    <input checked class="sr-only peer" name="delivery" type="radio" value="25000" x-on:change="$dispatch('update-delivery', 25000)">
+                                    <input class="sr-only peer" name="delivery" type="radio" value="25000" x-model.number="deliveryCost">
                                     <div class="h-full border border-[#121212]/10 peer-checked:border-[#121212] peer-checked:bg-[#121212]/5 bg-[#fcfcfc] rounded-2xl p-5 transition-all group-hover:border-[#121212]/30 flex flex-col items-center text-center gap-3">
                                         <i class="ph ph-lightning text-3xl text-[#121212]/40 peer-checked:text-[#121212]"></i>
                                         <span class="font-jakarta font-semibold text-[#121212]">Instant 3 Jam</span>
@@ -70,7 +70,7 @@
                                     </div>
                                 </label>
                                 <label class="cursor-pointer relative group">
-                                    <input class="sr-only peer" name="delivery" type="radio" value="15000" x-on:change="$dispatch('update-delivery', 15000)">
+                                    <input class="sr-only peer" name="delivery" type="radio" value="15000" x-model.number="deliveryCost">
                                     <div class="h-full border border-[#121212]/10 peer-checked:border-[#121212] peer-checked:bg-[#121212]/5 bg-[#fcfcfc] rounded-2xl p-5 transition-all group-hover:border-[#121212]/30 flex flex-col items-center text-center gap-3">
                                         <i class="ph ph-clock text-3xl text-[#121212]/40 peer-checked:text-[#121212]"></i>
                                         <span class="font-jakarta font-semibold text-[#121212]">Same Day</span>
@@ -78,7 +78,7 @@
                                     </div>
                                 </label>
                                 <label class="cursor-pointer relative group">
-                                    <input class="sr-only peer" name="delivery" type="radio" value="10000" x-on:change="$dispatch('update-delivery', 10000)">
+                                    <input class="sr-only peer" name="delivery" type="radio" value="10000" x-model.number="deliveryCost">
                                     <div class="h-full border border-[#121212]/10 peer-checked:border-[#121212] peer-checked:bg-[#121212]/5 bg-[#fcfcfc] rounded-2xl p-5 transition-all group-hover:border-[#121212]/30 flex flex-col items-center text-center gap-3">
                                         <i class="ph ph-car-profile text-3xl text-[#121212]/40 peer-checked:text-[#121212]"></i>
                                         <span class="font-jakarta font-semibold text-[#121212]">Reguler (1-2 Hari)</span>
@@ -141,7 +141,7 @@
             </div>
             
             <!-- Right Column: Order Summary -->
-            <div class="lg:col-span-5 xl:col-span-4" x-data="{ deliveryCost: 25000, discount: {{ session('promo_discount', 0) }} }" @update-delivery.window="deliveryCost = $event.detail">
+            <div class="lg:col-span-5 xl:col-span-4">
                 <div class="outer-shell sticky top-[120px]">
                     <div class="inner-core bg-white p-8">
                         <h2 class="font-display font-semibold text-2xl text-[#121212] border-b border-[#121212]/5 pb-6 mb-6 tracking-tight-display">Ringkasan Pesanan</h2>
@@ -189,7 +189,7 @@
                             @endif
                             <div class="flex justify-between items-end mt-4 pt-4 border-t border-[#121212]/5">
                                 <span class="font-semibold text-[#121212] text-lg">Total Pembayaran</span>
-                                <span class="font-display font-semibold text-3xl text-[#121212] tracking-tight-display" x-text="'Rp ' + ({{ $subtotal }} + deliveryCost - discount).toLocaleString('id-ID')">Rp {{ number_format($subtotal + 25000 - session('promo_discount', 0), 0, ',', '.') }}</span>
+                                <span class="font-display font-semibold text-3xl text-[#121212] tracking-tight-display" x-text="'Rp ' + Math.max(0, ({{ $subtotal }} + deliveryCost - discount)).toLocaleString('id-ID')">Rp {{ number_format(max(0, $subtotal + 25000 - session('promo_discount', 0)), 0, ',', '.') }}</span>
                             </div>
                         </div>
                         <button onclick="document.getElementById('checkoutForm').submit()" class="w-full bg-[#121212] text-white font-jakarta font-semibold text-lg py-4 rounded-full shadow-sm hover:bg-black transition-colors active:scale-95 flex items-center justify-center gap-2">
